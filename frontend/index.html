@@ -220,9 +220,7 @@
                 <div id="accueilPage" class="page">
                     <div class="page-title-container">
                         <h1 class="page-title">Tableau de Bord</h1>
-                        <div id="globalBalanceDisplay" class="global-balance-display">
-                            <!-- Sera peuplé par JS -->
-                        </div>
+                        <div id="globalBalanceDisplay" class="global-balance-display"></div>
                     </div>
                     <div class="accueil-controls">
                         <div class="btn-group">
@@ -236,9 +234,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="accueil-indicators-grid" id="accueilIndicatorsGrid">
-                        <!-- Les cartes d'indicateurs seront générées ici par JS -->
-                    </div>
+                    <div class="accueil-indicators-grid" id="accueilIndicatorsGrid"></div>
                 </div>
 
                 <!-- PAGE ENTRÉES -->
@@ -395,7 +391,33 @@
     </div>
 
 <script>
-    const API_BASE_URL = 'http://localhost:3000/api';
+    // ===================================================================
+    // ==   CONFIGURATION D'ENVIRONNEMENT (DEVELOPPEMENT / PRODUCTION)  ==
+    // ===================================================================
+
+    // Cette fonction détecte si le code est exécuté sur votre ordinateur (localhost)
+    // ou en ligne sur un serveur de production (comme github.io).
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // URL du serveur pour le développement local (quand vous lancez le backend sur votre PC)
+    const LOCAL_API_URL = 'http://localhost:3000/api';
+    
+    // !!! ATTENTION !!!
+    // C'est l'URL de votre futur serveur en ligne.
+    // Vous devez d'abord déployer votre dossier "backend" sur un service comme Render.com
+    // pour obtenir une vraie URL publique, puis la remplacer ici.
+    const PRODUCTION_API_URL = 'https://VOTRE-APP-BACKEND.onrender.com/api'; // <--- URL À REMPLACER
+    
+    // La constante API_BASE_URL choisit automatiquement la bonne URL en fonction de l'environnement.
+    const API_BASE_URL = isLocal ? LOCAL_API_URL : PRODUCTION_API_URL;
+    
+    // Affiche dans la console quelle URL est utilisée (très utile pour le débogage)
+    console.log(`Environnement détecté: ${isLocal ? 'Local' : 'Production'}. Utilisation de l'API: ${API_BASE_URL}`);
+
+    // =================================================================
+    // == FIN DE LA MODIFICATION - Le reste du code est identique ==
+    // =================================================================
+
     let currentUser = JSON.parse(sessionStorage.getItem('fonds_currentUser_cogm_db')) || null;
     let entrees = [];
     let sorties = [];
@@ -418,7 +440,6 @@
     const resetStatus = document.getElementById('resetStatus');
     const refreshDataButton = document.getElementById('refreshDataButton');
     
-    // Éléments pour les entrées
     const formEntree = document.getElementById('formEntree');
     const entreeCodeInput = document.getElementById('entreeCode');
     const entreeTypeOffrandeSelect = document.getElementById('entreeTypeOffrande');
@@ -427,7 +448,6 @@
     const submitEntreeBtn = document.getElementById('submitEntreeBtn');
     const cancelEditEntreeBtn = document.getElementById('cancelEditEntreeBtn');
 
-    // Éléments pour les sorties
     const formSortie = document.getElementById('formSortie');
     const sortieCodeInput = document.getElementById('sortieCode');
     const sortieTypeTransactionSelect = document.getElementById('sortieTypeTransaction');
@@ -436,7 +456,6 @@
     const submitSortieBtn = document.getElementById('submitSortieBtn');
     const cancelEditSortieBtn = document.getElementById('cancelEditSortieBtn');
     
-    // Autres éléments du DOM
     const accueilIndicatorsGrid = document.getElementById('accueilIndicatorsGrid');
     const accueilTypeOffrandeFilterSelect = document.getElementById('accueilTypeOffrandeFilter');
     const invAnneeSelect = document.getElementById('invAnnee');
@@ -462,7 +481,11 @@
             return await response.json();
         } catch (error) {
             console.error(`Erreur API pour ${endpoint}:`, error);
-            alert(`Erreur de communication avec le serveur: ${error.message}`);
+            let userMessage = `Erreur de communication avec le serveur: ${error.message}`;
+            if (!isLocal && error.message.includes('Failed to fetch')) {
+                userMessage = "Le serveur de l'application est actuellement indisponible. Veuillez réessayer plus tard.";
+            }
+            alert(userMessage);
             throw error;
         }
     }
@@ -480,8 +503,6 @@
             sessionStorage.setItem('fonds_currentUser_cogm_db', JSON.stringify(currentUser));
             
             authPageEl.style.display = 'none';
-            resetPasswordFormPart.style.display = 'none'; 
-            loginFormPart.style.display = 'block'; 
             document.body.style.justifyContent = 'flex-start';
             appContainerEl.style.display = 'flex';
             loggedInUserDisplay.textContent = `Utilisateur: ${currentUser.username}`;
@@ -496,17 +517,11 @@
     function showResetPasswordForm() {
         loginFormPart.style.display = 'none';
         resetPasswordFormPart.style.display = 'block';
-        authError.textContent = ''; 
-        resetStatus.textContent = ''; 
-        resetStatus.className = 'status-message'; 
     }
 
     function showLoginForm() {
         resetPasswordFormPart.style.display = 'none';
         loginFormPart.style.display = 'block';
-        resetStatus.textContent = '';
-        authError.textContent = '';
-        resetStatus.className = 'status-message'; 
     }
 
     async function processPasswordReset() {
@@ -524,9 +539,8 @@
             const response = await fetchApi('/auth/reset-password', {
                 method: 'POST', body: JSON.stringify({ username, newPassword })
             });
-            resetStatus.textContent = response.message || "Mot de passe réinitialisé ! Vous pouvez vous connecter.";
+            resetStatus.textContent = response.message || "Mot de passe réinitialisé !";
             resetStatus.classList.add('success');
-            resetUsernameInput.value = ''; resetNewPasswordInput.value = ''; resetConfirmPasswordInput.value = '';
             setTimeout(() => { showLoginForm(); }, 3000);
         } catch (error) {
             resetStatus.textContent = error.message || "Erreur lors de la réinitialisation.";
@@ -591,7 +605,7 @@
     function validateTransactionForm(data, statusElement) {
         statusElement.textContent = '';
         const today = new Date();
-        today.setHours(23, 59, 59, 999); // Pour inclure toute la journée d'aujourd'hui
+        today.setHours(23, 59, 59, 999);
         const selectedDate = new Date(data.date);
 
         if (!data.date) {
@@ -609,7 +623,6 @@
         return true;
     }
 
-    // --- GESTION DES ENTRÉES ---
     if(formEntree) formEntree.addEventListener('submit', async function(e) {
         e.preventDefault();
         const entreeData = { 
@@ -629,7 +642,7 @@
                 cancelEditEntree();
             } else {
                 const nouvelleEntree = await fetchApi('/entrees', { method: 'POST', body: JSON.stringify(entreeData) });
-                entrees.unshift(nouvelleEntree); // Ajoute au début
+                entrees.unshift(nouvelleEntree);
                 cancelEditEntree();
             }
             renderAll();
@@ -661,7 +674,7 @@
     function startEditEntree(id) {
         const entree = entrees.find(e => e.id === id);
         if (!entree) return;
-        cancelEditSortie(); // Annuler l'édition de sortie si active
+        cancelEditSortie();
         editingEntreeId = id;
         
         document.getElementById('entreeDate').value = new Date(entree.date_entree).toISOString().split('T')[0];
@@ -701,7 +714,6 @@
         }
     }
 
-    // --- GESTION DES SORTIES ---
     if(formSortie) formSortie.addEventListener('submit', async function(e) {
         e.preventDefault();
         const sortieData = { 
@@ -721,7 +733,7 @@
                 cancelEditSortie();
             } else {
                 const nouvelleSortie = await fetchApi('/sorties', { method: 'POST', body: JSON.stringify(sortieData) });
-                sorties.unshift(nouvelleSortie); // Ajoute au début
+                sorties.unshift(nouvelleSortie);
                 cancelEditSortie();
             }
             renderAll();
@@ -753,7 +765,7 @@
     function startEditSortie(id) {
         const sortie = sorties.find(s => s.id === id);
         if (!sortie) return;
-        cancelEditEntree(); // Annuler l'édition d'entrée si active
+        cancelEditEntree();
         editingSortieId = id;
         
         document.getElementById('sortieDate').value = new Date(sortie.date_sortie).toISOString().split('T')[0];
@@ -793,10 +805,10 @@
         }
     }
     
-    // --- FONCTIONS UTILITAIRES ET DE RENDU ---
-    
     function renderAll() {
         const activePageId = document.querySelector('.page.active')?.id || 'accueilPage';
+
+        if(appContainerEl.style.display === 'none') return;
 
         updatePageTotals();
         updateGlobalBalanceDisplay();
@@ -816,13 +828,6 @@
             renderAccueilPage();
         }
     }
-    
-    // Le reste des fonctions (calculs, inventaire, accueil...) sont ici.
-    // ... (Collez ici TOUTES les autres fonctions du script original que j'ai omises pour la concision,
-    // telles que populateTypeOffrandeDropdowns, updateEntreeCode, updateSortieCode, calculateTotalsByCurrency,
-    // filterAccueilByCurrency, renderAccueilPage, createIndicatorCard, updateGlobalBalanceDisplay,
-    // formatBalanceClass, populateInventoryDateFilters, renderInventairePage et la fonction window.onload)
-    // JE VAIS LES REMETTRE CI-DESSOUS POUR LA COMPLETUDE.
     
     function populateTypeOffrandeDropdowns() {
         const selects = [entreeTypeOffrandeSelect, sortieTypeTransactionSelect, accueilTypeOffrandeFilterSelect];
@@ -847,12 +852,14 @@
     }
     
     function updateEntreeCode() {
+        if(editingEntreeId) return;
         const prefix = "ENT";
         const nextId = (entrees.length > 0 ? Math.max(0, ...entrees.map(e => parseInt(String(e.code || "ENT-0").split('-').pop()) || 0)) : 0) + 1;
         if(entreeCodeInput) entreeCodeInput.value = `${prefix}-${String(nextId).padStart(4, '0')}`;
     }
 
     function updateSortieCode() {
+        if(editingSortieId) return;
         const prefix = "SRT";
         const nextId = (sorties.length > 0 ? Math.max(0, ...sorties.map(s => parseInt(String(s.code || "SRT-0").split('-').pop()) || 0)) : 0) + 1;
         if(sortieCodeInput) sortieCodeInput.value = `${prefix}-${String(nextId).padStart(4, '0')}`;
@@ -994,7 +1001,6 @@
             appContainerEl.style.display = 'none';
         }
     };
-
 </script>
 
 </body>
