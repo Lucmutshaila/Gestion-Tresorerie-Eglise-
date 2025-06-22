@@ -1,6 +1,6 @@
-// server.js (MODIFIÉ POUR POSTGRES)
+// server.js (MODIFIÉ POUR POSTGRES ET AVEC ROUTEUR /api)
 const express = require('express');
-const { Pool } = require('pg'); // On utilise le pilote 'pg' pour Postgres
+const { Pool } = require('pg');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 
@@ -10,11 +10,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Configuration pour Postgres
-// Render fournira automatiquement l'URL de connexion via la variable d'environnement DATABASE_URL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // La configuration SSL est nécessaire pour les connexions à Render
   ssl: {
     rejectUnauthorized: false
   }
@@ -24,6 +21,116 @@ const typesOffrandeValides = [
     "Offrande ordinaire", "Offrande d'adoration", "Offrande d'action de grace",
     "Offrande de construction", "Dime", "Dime des offrandes"
 ];
+
+async function initializeDatabase() {
+    let client;
+    try {
+        client = await pool.connect();
+        console.log('Connecté à la base de données PostgreSQL.');
+
+        // Création des tables (pas de changement ici)
+        await client.query(`CREATE TABLE IF NOT EXISTS users (...)`);
+        await client.query(`CREATE TABLE IF NOT EXISTS entrees (...)`);
+        await client.query(`CREATE TABLE IF NOT EXISTS sorties (...)`);
+
+        // Création de l'utilisateur admin (pas de changement ici)
+        const res = await client.query("SELECT COUNT(*) as count FROM users");
+        if (res.rows[0].count === '0') {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash("admin123", salt);
+            await client.query("INSERT INTO users (username, password) VALUES ($1, $2)", ["admin", hashedPassword]);
+            console.log("Utilisateur 'admin' créé.");
+        }
+    } catch (err) {
+        console.error("ERREUR CRITIQUE BDD:", err);
+        process.exit(1);
+    } finally {
+        if (client) client.release();
+    }
+}
+
+// =========================================================
+// ==   CRÉATION D'UN ROUTEUR PRINCIPAL POUR L'API        ==
+// =========================================================
+const apiRouter = express.Router();
+
+// --- Routes d'Authentification ---
+apiRouter.post('/auth/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        if (result.rows.length === 0) return res.status(401).json({ message: "Identifiants incorrects." });
+        
+        const user = result.rows[0];
+        const isValid = await bcrypt.compare(password, user.password);
+        if (!isValid) return res.status(401).json({ message: "Identifiants incorrects." });
+        
+        res.json({ id: user.id, username: user.username });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Erreur serveur." });
+    }
+});
+
+apiRouter.post('/auth/reset-password', async (req, res) => {
+    // ... (votre code de reset-password ici, il est correct)
+});
+
+
+// --- Routes pour les Méta-données ---
+apiRouter.get('/meta/types-offrandes', (req, res) => {
+    res.json(typesOffrandeValides);
+});
+
+// --- Routes pour les Entrées (CRUD) ---
+apiRouter.get('/entrees', async (req, res) => { /* ... */ });
+apiRouter.post('/entrees', async (req, res) => { /* ... */ });
+apiRouter.put('/entrees/:id', async (req, res) => { /* ... */ });
+apiRouter.delete('/entrees/:id', async (req, res) => { /* ... */ });
+
+// --- Routes pour les Sorties (CRUD) ---
+apiRouter.get('/sorties', async (req, res) => { /* ... */ });
+apiRouter.post('/sorties', async (req, res) => { /* ... */ });
+apiRouter.put('/sorties/:id', async (req, res) => { /* ... */ });
+apiRouter.delete('/sorties/:id', async (req, res) => { /* ... */ });
+
+// On dit à notre application Express d'utiliser ce routeur
+// pour toutes les URLs qui commencent par /api
+app.use('/api', apiRouter);
+
+// =========================================================
+
+// ... Le reste du code (startServer, etc.)
+
+// Je vais coller le code complet et fonctionnel ci-dessous.
+Use code with caution.
+JavaScript
+Voici le code entier à copier-coller dans backend/server.js.
+Generated javascript
+// server.js (VERSION FINALE POUR POSTGRES AVEC ROUTEUR /api)
+const express = require('express');
+const { Pool } = require('pg');
+const cors = require('cors');
+const bcrypt = require('bcryptjs');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+const typesOffrandeValides = [
+    "Offrande ordinaire", "Offrande d'adoration", "Offrande d'action de grace",
+    "Offrande de construction", "Dime", "Dime des offrandes"
+];
+const typesSortieValides = [...typesOffrandeValides, "Autre Dépense"];
 
 async function initializeDatabase() {
     let client;
@@ -80,54 +187,67 @@ async function initializeDatabase() {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash("admin123", salt);
             await client.query("INSERT INTO users (username, password) VALUES ($1, $2)", ["admin", hashedPassword]);
-            console.log("Utilisateur 'admin' créé avec le mot de passe 'admin123'");
+            console.log("Utilisateur 'admin' créé.");
         }
     } catch (err) {
-        console.error("ERREUR CRITIQUE lors de l'initialisation de la base de données:", err);
+        console.error("ERREUR CRITIQUE BDD:", err);
         process.exit(1);
     } finally {
-        if (client) client.release(); // Très important de libérer le client
+        if (client) client.release();
     }
 }
 
+// --- Création du routeur principal pour l'API ---
+const apiRouter = express.Router();
+
 // --- Authentification ---
-app.post('/api/auth/login', async (req, res) => {
+apiRouter.post('/auth/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
-        if (result.rows.length === 0) return res.status(401).json({ message: "Nom d'utilisateur ou mot de passe incorrect." });
-        
+        if (result.rows.length === 0) return res.status(401).json({ message: "Identifiants incorrects." });
         const user = result.rows[0];
         const isValid = await bcrypt.compare(password, user.password);
-        if (!isValid) return res.status(401).json({ message: "Nom d'utilisateur ou mot de passe incorrect." });
-        
+        if (!isValid) return res.status(401).json({ message: "Identifiants incorrects." });
         res.json({ id: user.id, username: user.username });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Erreur serveur." });
-    }
+    } catch (err) { res.status(500).json({ message: "Erreur serveur." }); }
+});
+
+apiRouter.post('/auth/reset-password', async (req, res) => {
+    try {
+        const { username, newPassword } = req.body;
+        if (!username || !newPassword || newPassword.length < 6) {
+            return res.status(400).json({ message: "Données invalides." });
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        const result = await pool.query("UPDATE users SET password = $1 WHERE username = $2", [hashedPassword, username]);
+        if (result.rowCount === 0) return res.status(404).json({ message: "Utilisateur non trouvé." });
+        res.status(200).json({ message: "Mot de passe réinitialisé." });
+    } catch (err) { res.status(500).json({ message: "Erreur serveur." }); }
+});
+
+// --- Méta-données ---
+apiRouter.get('/meta/types-offrandes', (req, res) => {
+    res.json(typesOffrandeValides);
 });
 
 // --- Entrées ---
-app.get('/api/entrees', async (req, res) => {
+apiRouter.get('/entrees', async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM entrees ORDER BY date_entree DESC, id DESC");
         res.json(result.rows);
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
-
-app.post('/api/entrees', async (req, res) => {
+apiRouter.post('/entrees', async (req, res) => {
     const { code, date_entree, type_offrande, montant, devise, temoin, commentaires, utilisateur_id } = req.body;
     try {
         const sql = `INSERT INTO entrees (code, date_entree, type_offrande, montant, devise, temoin, commentaires, utilisateur_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
         const result = await pool.query(sql, [code, date_entree, type_offrande, montant, devise, temoin, commentaires, utilisateur_id]);
         res.status(201).json(result.rows[0]);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
-
-app.put('/api/entrees/:id', async (req, res) => {
+apiRouter.put('/entrees/:id', async (req, res) => {
     const { id } = req.params;
     const { date_entree, type_offrande, montant, devise, temoin, commentaires } = req.body;
     try {
@@ -135,12 +255,9 @@ app.put('/api/entrees/:id', async (req, res) => {
         const result = await pool.query(sql, [date_entree, type_offrande, montant, devise, temoin, commentaires, id]);
         if (result.rowCount === 0) return res.status(404).json({ message: "Entrée non trouvée." });
         res.json(result.rows[0]);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
-
-app.delete('/api/entrees/:id', async (req, res) => {
+apiRouter.delete('/entrees/:id', async (req, res) => {
     try {
         const result = await pool.query('DELETE FROM entrees WHERE id = $1', [req.params.id]);
         if (result.rowCount === 0) return res.status(404).json({ message: "Entrée non trouvée." });
@@ -148,27 +265,22 @@ app.delete('/api/entrees/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-
 // --- Sorties ---
-app.get('/api/sorties', async (req, res) => {
+apiRouter.get('/sorties', async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM sorties ORDER BY date_sortie DESC, id DESC");
         res.json(result.rows);
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
-
-app.post('/api/sorties', async (req, res) => {
+apiRouter.post('/sorties', async (req, res) => {
     const { code, date_sortie, type_transaction, montant, devise, temoin, commentaires, utilisateur_id } = req.body;
     try {
         const sql = `INSERT INTO sorties (code, date_sortie, type_transaction, montant, devise, temoin, commentaires, utilisateur_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
         const result = await pool.query(sql, [code, date_sortie, type_transaction, montant, devise, temoin, commentaires, utilisateur_id]);
         res.status(201).json(result.rows[0]);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
-
-app.put('/api/sorties/:id', async (req, res) => {
+apiRouter.put('/sorties/:id', async (req, res) => {
     const { id } = req.params;
     const { date_sortie, type_transaction, montant, devise, temoin, commentaires } = req.body;
     try {
@@ -176,12 +288,9 @@ app.put('/api/sorties/:id', async (req, res) => {
         const result = await pool.query(sql, [date_sortie, type_transaction, montant, devise, temoin, commentaires, id]);
         if (result.rowCount === 0) return res.status(404).json({ message: "Sortie non trouvée." });
         res.json(result.rows[0]);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
-
-app.delete('/api/sorties/:id', async (req, res) => {
+apiRouter.delete('/sorties/:id', async (req, res) => {
     try {
         const result = await pool.query('DELETE FROM sorties WHERE id = $1', [req.params.id]);
         if (result.rowCount === 0) return res.status(404).json({ message: "Sortie non trouvée." });
@@ -189,16 +298,11 @@ app.delete('/api/sorties/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// Meta-données
-app.get('/api/meta/types-offrandes', (req, res) => {
-    res.json(typesOffrandeValides);
-});
 
-// Gestion des routes non trouvées
-app.use((req, res) => {
-    res.status(404).json({ message: "Route non trouvée." });
-});
+// On dit à Express d'utiliser ce routeur pour toutes les requêtes commençant par /api
+app.use('/api', apiRouter);
 
+// Démarrage du serveur
 async function startServer() {
     await initializeDatabase();
     app.listen(PORT, () => {
