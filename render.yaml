@@ -3,7 +3,7 @@
 
 services:
   # 1. Service pour la base de données PostgreSQL
-  - type: postgres # <-- CORRECTION ICI
+  - type: postgresql # <-- CORRECTION ICI
     name: caisse-db
     databaseName: caisse_eglise_db
     plan: free # Utilise le plan gratuit
