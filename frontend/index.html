@@ -4,68 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CAMP OF GOD CHURCH - Treasury Department</title>
-    <!-- Ajout d'une police professionnelle depuis Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ================================================ */
-        /* == VARIABLES DE COULEUR ET CONFIGURATION DE BASE == */
-        /* ================================================ */
         :root {
-            --primary-color: #7D4FFE;
-            --primary-color-dark: #6A32E5;
-            --primary-color-light: #EBE0FF;
-            --text-color: #343a40;
-            --text-color-light: #6c757d;
-            --bg-color: #F4F6FC; 
-            --sidebar-bg: #FFFFFF;
-            --card-bg: #FFFFFF;
-            --border-color: #e9ecef;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --danger-color-dark: #c82333;
-            --info-color: #007bff;
-            --info-color-dark: #0056b3;
-            --font-family: 'Poppins', sans-serif;
-            --shadow: 0 4px 12px rgba(0,0,0,0.08);
-            --shadow-light: 0 2px 6px rgba(0,0,0,0.05);
+            --primary-color: #7D4FFE; --primary-color-dark: #6A32E5; --primary-color-light: #EBE0FF;
+            --text-color: #343a40; --text-color-light: #6c757d; --bg-color: #F4F6FC; 
+            --sidebar-bg: #FFFFFF; --card-bg: #FFFFFF; --border-color: #e9ecef;
+            --success-color: #28a745; --danger-color: #dc3545; --danger-color-dark: #c82333;
+            --info-color: #007bff; --info-color-dark: #0056b3;
+            --font-family: 'Poppins', sans-serif; --shadow: 0 4px 12px rgba(0,0,0,0.08); --shadow-light: 0 2px 6px rgba(0,0,0,0.05);
         }
-
         *, *::before, *::after { box-sizing: border-box; }
         body { font-family: var(--font-family); margin: 0; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; align-items: center; justify-content: center; }
-
-        /* ================================================ */
-        /* == PAGE DE CONNEXION (AUTH) == */
-        /* ================================================ */
-        #authPage {
-            width: 100%; max-width: 400px; padding: 40px; background-color: var(--card-bg);
-            border-radius: 12px; box-shadow: var(--shadow); text-align: center; margin: 20px;
-        }
+        #authPage { width: 100%; max-width: 400px; padding: 40px; background-color: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow); text-align: center; margin: 20px; }
         .auth-logo { font-size: 2em; font-weight: 700; color: var(--primary-color); margin-bottom: 8px; }
         .auth-subtitle { font-size: 0.9em; color: var(--text-color-light); margin-bottom: 30px; }
         #authPage h1 { color: var(--text-color); margin-bottom: 25px; font-size: 1.8em; font-weight: 600; }
-        #authPage input {
-            display: block; margin: 18px auto; padding: 14px; width: 100%; border: 1px solid var(--border-color);
-            border-radius: 8px; font-size: 1em; background-color: var(--bg-color); transition: all 0.3s ease;
-        }
+        #authPage input { display: block; margin: 18px auto; padding: 14px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1em; background-color: var(--bg-color); transition: all 0.3s ease; }
         #authPage input:focus { border-color: var(--primary-color); box-shadow: 0 0 0 0.2rem rgba(125, 79, 254, 0.25); outline: none; background-color: white; }
-        #authPage button {
-            padding: 14px 20px; background-color: var(--primary-color); color: white; border: none; border-radius: 8px;
-            cursor: pointer; font-size: 1.05em; font-weight: 500; transition: background-color 0.3s ease; width: 100%; margin-top: 10px;
-        }
+        #authPage button { padding: 14px 20px; background-color: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.05em; font-weight: 500; transition: background-color 0.3s ease; width: 100%; margin-top: 10px; }
         #authPage button:hover { background-color: var(--primary-color-dark); }
         .status-message { margin-top:18px; font-size: 0.9em; min-height: 1.2em; }
         .error { color: var(--danger-color); } .success { color: var(--success-color); }
         .forgot-password-link { display: block; margin-top: 15px; font-size: 0.9em; color: var(--primary-color); text-decoration: none; }
         .forgot-password-link:hover { text-decoration: underline; }
-
-        /* ================================================ */
-        /* == STRUCTURE DE MISE EN PAGE == */
-        /* ================================================ */
         #appContainer { display: none; width: 100%; height: 100vh; flex-direction: row; }
-        
         .sidebar { width: 260px; background-color: var(--sidebar-bg); flex-shrink: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border-color); padding: 20px 0; }
         .sidebar-header { padding: 0 25px 25px 25px; text-align: center; border-bottom: 1px solid var(--border-color); }
         .sidebar-header .logo-title { margin: 0; font-size: 1.5em; font-weight: 700; color: var(--primary-color); }
@@ -76,10 +42,10 @@
         .sidebar-nav a.active { background-color: var(--primary-color); color: white; box-shadow: 0 4px 8px rgba(125, 79, 254, 0.3); }
         .sidebar-nav a::before { font-weight: 600; width: 20px; text-align: center; }
         .nav-accueil::before { content: '🏠'; } .nav-entrees::before { content: '📥'; } .nav-sorties::before { content: '📤'; } .nav-inventaire::before { content: '📊'; }
+        .nav-utilisateurs::before { content: '👥'; }
         .sidebar-footer { padding: 20px 25px; border-top: 1px solid var(--border-color); }
         #logoutButton { width: 100%; background-color: var(--primary-color-light); color: var(--primary-color-dark); border: none; padding: 12px 14px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-size: 0.95em; font-weight: 600; }
         #logoutButton:hover { background-color: var(--danger-color); color: white; }
-        
         .main-content { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; }
         .page-header { display: flex; justify-content: flex-end; align-items: center; padding: 15px 30px; background-color: var(--card-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 99; }
         #refreshDataButton { background-color: transparent; color: var(--text-color-light); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-size: 1.3em; margin-right: 20px; line-height: 1; }
@@ -89,26 +55,18 @@
         .page { display: none; }
         .page.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* ================================================ */
-        /* == STYLES DES PAGES ET COMPOSANTS == */
-        /* ================================================ */
         .page-title-container { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; }
         .page-title { margin-bottom: 0; }
-
         h2.section-title { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); font-size: 1.6em; }
         .section-title-totals { font-size: 0.65em; font-weight: 500; color: #495057; text-align: right; line-height: 1.5; }
         .section-title-totals span { display: block; }
         .total-usd { color: var(--success-color); } .total-cdf { color: var(--primary-color); }
         h3 { margin-top: 40px; color: var(--text-color); font-size: 1.2em; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
-
-        /* -- ACCUEIL - NOUVELLE DISPOSITION -- */
         .global-balance-display { text-align: right; }
         .global-balance-display .balance-label { font-size: 0.9em; color: var(--text-color-light); display: block; margin-bottom: 4px; }
         .global-balance-display .balance-value { font-size: 1.2em; font-weight: 600; display: block; line-height: 1.4; }
         .global-balance-display .usd { color: var(--success-color); }
         .global-balance-display .cdf { color: var(--primary-color); }
-
         .accueil-controls { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 25px; padding: 15px; background-color: var(--card-bg); border-radius: 10px; border: 1px solid var(--border-color); }
         .accueil-controls .btn-group button { padding: 8px 18px; font-size: 0.9em; border: 1px solid var(--border-color); color: var(--text-color-light); background-color: transparent; cursor: pointer; transition: all 0.3s ease; }
         .accueil-controls .btn-group button:first-child { border-radius: 6px 0 0 6px; }
@@ -116,7 +74,6 @@
         .accueil-controls .btn-group button:last-child { border-radius: 0 6px 6px 0; border-left: none; }
         .accueil-controls .btn-group button.active, .accueil-controls .btn-group button:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
         .accueil-controls .form-group { margin-bottom: 0; min-width: 250px; }
-
         .accueil-indicators-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
         .indicator-card { background-color: var(--card-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); box-shadow: var(--shadow-light); transition: all 0.3s ease; }
         .indicator-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
@@ -127,8 +84,6 @@
         .balance-amount.negative { color: var(--danger-color); }
         .balance-amount.neutral { color: var(--primary-color); }
         .details { font-size: 0.75em; color: var(--text-color-light); text-align: center; margin-top: 3px; }
-        
-        /* -- FORMULAIRES & AUTRES -- */
         form { margin-bottom: 30px; padding: 25px; background-color: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
         .form-group label { display: block; font-weight: 500; color: var(--text-color); margin-bottom: 8px; font-size: 0.9em; }
@@ -142,7 +97,6 @@
         .form-actions .cancel-btn { background-color: var(--text-color-light); }
         .form-actions .cancel-btn:hover { background-color: var(--text-color); }
         .form-status-message { text-align: center; margin-top: 15px; font-size: 0.9em; min-height: 1.2em; }
-        
         .table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; background-color: var(--card-bg); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-light); }
         th, td { padding: 12px 15px; text-align: left; vertical-align: middle; }
@@ -165,7 +119,6 @@
 </head>
 <body>
 
-    <!-- PAGE DE CONNEXION -->
     <div id="authPage">
         <div class="auth-logo">CAMP OF GOD CHURCH</div>
         <div class="auth-subtitle">Treasury Department</div>
@@ -188,10 +141,8 @@
         </div>
     </div>
 
-    <!-- CONTENEUR PRINCIPAL DE L'APPLICATION -->
     <div id="appContainer">
         
-        <!-- MENU LATÉRAL GAUCHE -->
         <nav class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-title">CAMP OF GOD CHURCH</div>
@@ -202,13 +153,13 @@
                 <a href="#" class="nav-entrees" onclick="showPage('entrees')">Entrées</a>
                 <a href="#" class="nav-sorties" onclick="showPage('sorties')">Sorties</a>
                 <a href="#" class="nav-inventaire" onclick="showPage('inventaire')">Inventaire</a>
+                <a href="#" id="nav-utilisateurs-link" class="nav-utilisateurs" onclick="showPage('utilisateurs')" style="display: none;">Utilisateurs</a>
             </div>
             <div class="sidebar-footer">
                  <button id="logoutButton" onclick="logout()">Déconnexion</button>
             </div>
         </nav>
 
-        <!-- CONTENU PRINCIPAL DROIT -->
         <main class="main-content">
             <header class="page-header">
                 <button id="refreshDataButton" onclick="manualRefreshData()" title="Rafraîchir les données">↻</button>
@@ -216,7 +167,7 @@
             </header>
             
             <div class="page-content-wrapper">
-                <!-- PAGE ACCUEIL -->
+                
                 <div id="accueilPage" class="page">
                     <div class="page-title-container">
                         <h1 class="page-title">Tableau de Bord</h1>
@@ -237,40 +188,21 @@
                     <div class="accueil-indicators-grid" id="accueilIndicatorsGrid"></div>
                 </div>
 
-                <!-- PAGE ENTRÉES -->
                 <div id="entreesPage" class="page">
                     <h2 class="section-title">Gestion des Entrées<div class="section-title-totals"><span id="entreesPageTotalUSD" class="total-usd"></span><span id="entreesPageTotalCDF" class="total-cdf"></span></div></h2>
                     <form id="formEntree">
                         <div class="form-grid">
-                            <div class="form-group">
-                                <label for="entreeDate">Date d'entrée:</label>
-                                <input type="date" id="entreeDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="entreeCode">Code:</label>
-                                <input type="text" id="entreeCode" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="entreeTypeOffrande">Type d'offrande:</label>
-                                <select id="entreeTypeOffrande" required></select>
-                            </div>
+                            <div class="form-group"><label for="entreeDate">Date d'entrée:</label><input type="date" id="entreeDate" required></div>
+                            <div class="form-group"><label for="entreeCode">Code:</label><input type="text" id="entreeCode" readonly></div>
+                            <div class="form-group"><label for="entreeTypeOffrande">Type d'offrande:</label><select id="entreeTypeOffrande" required></select></div>
                             <div class="form-group">
                                 <label for="entreeSomme">Somme:</label>
                                 <div style="display:flex; gap: 10px;">
-                                    <input type="number" id="entreeSomme" step="0.01" required>
-                                    <select id="entreeDevise" style="width: 100px;">
-                                        <option value="USD">USD</option><option value="CDF">CDF</option>
-                                    </select>
+                                    <input type="number" id="entreeSomme" step="0.01" required><select id="entreeDevise" style="width: 100px;"><option value="USD">USD</option><option value="CDF">CDF</option></select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="entreeTemoin">Témoin:</label>
-                                <input type="text" id="entreeTemoin">
-                            </div>
-                            <div class="form-group full-width">
-                                <label for="entreeCommentaires">Commentaires:</label>
-                                <textarea id="entreeCommentaires" rows="2"></textarea>
-                            </div>
+                            <div class="form-group"><label for="entreeTemoin">Témoin:</label><input type="text" id="entreeTemoin"></div>
+                            <div class="form-group full-width"><label for="entreeCommentaires">Commentaires:</label><textarea id="entreeCommentaires" rows="2"></textarea></div>
                         </div>
                         <div class="form-status-message error" id="entreeFormStatus"></div>
                         <div class="form-actions">
@@ -279,48 +211,24 @@
                         </div>
                     </form>
                     <h3>Liste des Entrées</h3>
-                    <div class="table-wrapper">
-                        <table id="tableEntrees">
-                            <thead><tr><th>Code</th><th>Date</th><th>Type Offrande</th><th>Somme</th><th>Témoin</th><th>Commentaires</th><th>Actions</th></tr></thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+                    <div class="table-wrapper"><table id="tableEntrees"><thead><tr><th>Code</th><th>Date</th><th>Type Offrande</th><th>Somme</th><th>Témoin</th><th>Commentaires</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
                 </div>
 
-                <!-- PAGE SORTIES -->
                 <div id="sortiesPage" class="page">
                      <h2 class="section-title">Gestion des Sorties<div class="section-title-totals"><span id="sortiesPageTotalUSD" class="total-usd"></span><span id="sortiesPageTotalCDF" class="total-cdf"></span></div></h2>
                     <form id="formSortie">
                          <div class="form-grid">
-                            <div class="form-group">
-                                <label for="sortieDate">Date de sortie:</label>
-                                <input type="date" id="sortieDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="sortieCode">Code:</label>
-                                <input type="text" id="sortieCode" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="sortieTypeTransaction">Type transaction/dépense:</label>
-                                <select id="sortieTypeTransaction" required></select>
-                            </div>
+                            <div class="form-group"><label for="sortieDate">Date de sortie:</label><input type="date" id="sortieDate" required></div>
+                            <div class="form-group"><label for="sortieCode">Code:</label><input type="text" id="sortieCode" readonly></div>
+                            <div class="form-group"><label for="sortieTypeTransaction">Type transaction/dépense:</label><select id="sortieTypeTransaction" required></select></div>
                             <div class="form-group">
                                 <label for="sortieSomme">Somme:</label>
                                 <div style="display:flex; gap: 10px;">
-                                    <input type="number" id="sortieSomme" step="0.01" required>
-                                    <select id="sortieDevise" style="width: 100px;">
-                                        <option value="USD">USD</option><option value="CDF">CDF</option>
-                                    </select>
+                                    <input type="number" id="sortieSomme" step="0.01" required><select id="sortieDevise" style="width: 100px;"><option value="USD">USD</option><option value="CDF">CDF</option></select>
                                 </div>
                             </div>
-                             <div class="form-group">
-                                <label for="sortieTemoin">Témoin:</label>
-                                <input type="text" id="sortieTemoin">
-                            </div>
-                            <div class="form-group full-width">
-                                <label for="sortieCommentaires">Commentaires (Raison):</label>
-                                <textarea id="sortieCommentaires" rows="2" required></textarea>
-                            </div>
+                             <div class="form-group"><label for="sortieTemoin">Témoin:</label><input type="text" id="sortieTemoin"></div>
+                            <div class="form-group full-width"><label for="sortieCommentaires">Commentaires (Raison):</label><textarea id="sortieCommentaires" rows="2" required></textarea></div>
                         </div>
                         <div class="form-status-message error" id="sortieFormStatus"></div>
                         <div class="form-actions">
@@ -329,117 +237,99 @@
                         </div>
                     </form>
                     <h3>Liste des Sorties</h3>
-                    <div class="table-wrapper">
-                        <table id="tableSorties">
-                            <thead><tr><th>Code</th><th>Date</th><th>Type Transaction</th><th>Somme</th><th>Témoin</th><th>Commentaires</th><th>Actions</th></tr></thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+                    <div class="table-wrapper"><table id="tableSorties"><thead><tr><th>Code</th><th>Date</th><th>Type Transaction</th><th>Somme</th><th>Témoin</th><th>Commentaires</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
                 </div>
 
-                <!-- PAGE INVENTAIRE -->
                 <div id="inventairePage" class="page">
                     <h2 class="section-title">Inventaire et Variance</h2>
                     <form class="inventory-filters form-grid" onsubmit="event.preventDefault(); renderInventairePage();">
-                        <div class="form-group">
-                            <label for="invAnnee">Année :</label>
-                            <select id="invAnnee"></select>
-                        </div>
-                        <div class="form-group">
-                            <label for="invMois">Mois :</label>
-                            <select id="invMois">
-                                <option value="tous">Tous les mois</option>
-                            </select>
-                        </div>
-                         <div class="form-group" style="align-self: flex-end;">
-                            <button type="submit" style="margin:0; width:100%;">Appliquer Filtres</button>
-                        </div>
+                        <div class="form-group"><label for="invAnnee">Année :</label><select id="invAnnee"></select></div>
+                        <div class="form-group"><label for="invMois">Mois :</label><select id="invMois"><option value="tous">Tous les mois</option></select></div>
+                         <div class="form-group" style="align-self: flex-end;"><button type="submit" style="margin:0; width:100%;">Appliquer Filtres</button></div>
                     </form>
                     <div class="inventory-summary-container">
                         <div class="summary-card">
                             <h4>Totaux USD ($)</h4>
                             <p><span>Entrées:</span> <strong id="invTotalEntreesUSD">0.00 $</strong></p>
                             <p><span>Sorties:</span> <strong id="invTotalSortiesUSD">0.00 $</strong></p>
-                            <hr style="border:0; border-top:1px solid var(--border-color); margin: 10px 0;">
-                            <p><span>Variance:</span> <strong id="invVarianceUSD" class="variance-neutral">0.00 $</strong></p>
+                            <hr style="border:0; border-top:1px solid var(--border-color); margin: 10px 0;"><p><span>Variance:</span> <strong id="invVarianceUSD" class="variance-neutral">0.00 $</strong></p>
                         </div>
                         <div class="summary-card">
                             <h4>Totaux CDF (FC)</h4>
                             <p><span>Entrées:</span> <strong id="invTotalEntreesCDF">0.00 FC</strong></p>
                             <p><span>Sorties:</span> <strong id="invTotalSortiesCDF">0.00 FC</strong></p>
-                             <hr style="border:0; border-top:1px solid var(--border-color); margin: 10px 0;">
-                            <p><span>Variance:</span> <strong id="invVarianceCDF" class="variance-neutral">0.00 FC</strong></p>
+                             <hr style="border:0; border-top:1px solid var(--border-color); margin: 10px 0;"><p><span>Variance:</span> <strong id="invVarianceCDF" class="variance-neutral">0.00 FC</strong></p>
                         </div>
                     </div>
                     <h3>Détail des Entrées (Filtrées)</h3>
-                    <div class="table-wrapper">
-                        <table id="invTableEntreesDetail">
-                            <thead><tr><th>Code</th><th>Date</th><th>Type Offrande</th><th>Somme</th><th>Témoin</th><th>Commentaires</th></tr></thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+                    <div class="table-wrapper"><table id="invTableEntreesDetail"><thead><tr><th>Code</th><th>Date</th><th>Type Offrande</th><th>Somme</th><th>Témoin</th><th>Commentaires</th></tr></thead><tbody></tbody></table></div>
                     <h3>Détail des Sorties (Filtrées)</h3>
+                    <div class="table-wrapper"><table id="invTableSortiesDetail"><thead><tr><th>Code</th><th>Date</th><th>Type Transaction</th><th>Somme</th><th>Témoin</th><th>Commentaires</th></tr></thead><tbody></tbody></table></div>
+                </div>
+
+                <div id="utilisateursPage" class="page">
+                    <h2 class="section-title">Gestion des Utilisateurs</h2>
+                    <form id="formUtilisateur">
+                        <input type="hidden" id="utilisateurId">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="utilisateurUsername">Nom d'utilisateur :</label>
+                                <input type="text" id="utilisateurUsername" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="utilisateurPassword">Mot de passe :</label>
+                                <input type="password" id="utilisateurPassword">
+                                <small style="color: var(--text-color-light);">Laissez vide pour ne pas changer le mot de passe.</small>
+                            </div>
+                        </div>
+                        <div class="form-status-message error" id="utilisateurFormStatus"></div>
+                        <div class="form-actions">
+                            <button type="submit" id="submitUtilisateurBtn">Ajouter Utilisateur</button>
+                            <button type="button" class="cancel-btn" id="cancelEditUtilisateurBtn" style="display: none;" onclick="cancelEditUtilisateur()">Annuler</button>
+                        </div>
+                    </form>
+                    <h3>Liste des Utilisateurs</h3>
                     <div class="table-wrapper">
-                        <table id="invTableSortiesDetail">
-                            <thead><tr><th>Code</th><th>Date</th><th>Type Transaction</th><th>Somme</th><th>Témoin</th><th>Commentaires</th></tr></thead>
+                        <table id="tableUtilisateurs">
+                            <thead>
+                                <tr><th>ID</th><th>Nom d'utilisateur</th><th>Date de création</th><th>Actions</th></tr>
+                            </thead>
                             <tbody></tbody>
                         </table>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
 
 <script>
-    // ===================================================================
-    // ==   CONFIGURATION D'ENVIRONNEMENT (DEVELOPPEMENT / PRODUCTION)  ==
-    // ===================================================================
-
-    // Cette fonction détecte si le code est exécuté sur votre ordinateur (localhost)
-    // ou en ligne sur un serveur de production (comme github.io).
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
-    // URL du serveur pour le développement local (quand vous lancez le backend sur votre PC)
     const LOCAL_API_URL = 'http://localhost:3000/api';
-    
-    // !!! ATTENTION !!!
-    // C'est l'URL de votre futur serveur en ligne.
-    // Vous devez d'abord déployer votre dossier "backend" sur un service comme Render.com
-    // pour obtenir une vraie URL publique, puis la remplacer ici.
-    const PRODUCTION_API_URL = 'https://gestion-tresorerie-eglise.onrender.com/api' // <--- URL À REMPLACER
-    
-    // La constante API_BASE_URL choisit automatiquement la bonne URL en fonction de l'environnement.
+    const PRODUCTION_API_URL = 'https://caisse-backend.onrender.com/api';
     const API_BASE_URL = isLocal ? LOCAL_API_URL : PRODUCTION_API_URL;
-    
-    // Affiche dans la console quelle URL est utilisée (très utile pour le débogage)
-    console.log(`Environnement détecté: ${isLocal ? 'Local' : 'Production'}. Utilisation de l'API: ${API_BASE_URL}`);
+    console.log(`Environnement: ${isLocal ? 'Local' : 'Production'}. API: ${API_BASE_URL}`);
 
-    // =================================================================
-    // == FIN DE LA MODIFICATION - Le reste du code est identique ==
-    // =================================================================
-
-    let currentUser = JSON.parse(sessionStorage.getItem('fonds_currentUser_cogm_db')) || null;
+    let currentUser = null;
     let entrees = [];
     let sorties = [];
+    let users = [];
     let typesOffrandeGlobaux = [];
     let isLoadingData = false;
     let currentAccueilCurrencyFilter = null;
     let editingEntreeId = null;
     let editingSortieId = null;
+    let editingUserId = null;
 
-    // Définitions des éléments du DOM
     const authPageEl = document.getElementById('authPage');
     const appContainerEl = document.getElementById('appContainer');
     const authError = document.getElementById('authError');
     const loggedInUserDisplay = document.getElementById('loggedInUserDisplay');
     const loginFormPart = document.getElementById('loginFormPart');
     const resetPasswordFormPart = document.getElementById('resetPasswordFormPart');
-    const resetUsernameInput = document.getElementById('resetUsername');
-    const resetNewPasswordInput = document.getElementById('resetNewPassword');
-    const resetConfirmPasswordInput = document.getElementById('resetConfirmPassword');
-    const resetStatus = document.getElementById('resetStatus');
     const refreshDataButton = document.getElementById('refreshDataButton');
-    
+    const navUtilisateursLink = document.getElementById('nav-utilisateurs-link');
+
     const formEntree = document.getElementById('formEntree');
     const entreeCodeInput = document.getElementById('entreeCode');
     const entreeTypeOffrandeSelect = document.getElementById('entreeTypeOffrande');
@@ -455,18 +345,24 @@
     const sortieFormStatus = document.getElementById('sortieFormStatus');
     const submitSortieBtn = document.getElementById('submitSortieBtn');
     const cancelEditSortieBtn = document.getElementById('cancelEditSortieBtn');
-    
+
+    const formUtilisateur = document.getElementById('formUtilisateur');
+    const tableUtilisateursBody = document.getElementById('tableUtilisateurs').getElementsByTagName('tbody')[0];
+    const utilisateurFormStatus = document.getElementById('utilisateurFormStatus');
+    const submitUtilisateurBtn = document.getElementById('submitUtilisateurBtn');
+    const cancelEditUtilisateurBtn = document.getElementById('cancelEditUtilisateurBtn');
+
+    const globalBalanceDisplay = document.getElementById('globalBalanceDisplay');
     const accueilIndicatorsGrid = document.getElementById('accueilIndicatorsGrid');
     const accueilTypeOffrandeFilterSelect = document.getElementById('accueilTypeOffrandeFilter');
     const invAnneeSelect = document.getElementById('invAnnee');
     const invMoisSelect = document.getElementById('invMois');
-    const invTableEntreesDetailBody = document.getElementById('invTableEntreesDetail').getElementsByTagName('tbody')[0];
-    const invTableSortiesDetailBody = document.getElementById('invTableSortiesDetail').getElementsByTagName('tbody')[0];
     const entreesPageTotalUSD = document.getElementById('entreesPageTotalUSD');
     const entreesPageTotalCDF = document.getElementById('entreesPageTotalCDF');
     const sortiesPageTotalUSD = document.getElementById('sortiesPageTotalUSD');
     const sortiesPageTotalCDF = document.getElementById('sortiesPageTotalCDF');
-    const globalBalanceDisplay = document.getElementById('globalBalanceDisplay');
+    const invTableEntreesDetailBody = document.getElementById('invTableEntreesDetail').getElementsByTagName('tbody')[0];
+    const invTableSortiesDetailBody = document.getElementById('invTableSortiesDetail').getElementsByTagName('tbody')[0];
 
     async function fetchApi(endpoint, options = {}) {
         const headers = { 'Content-Type': 'application/json', ...options.headers };
@@ -495,10 +391,7 @@
         const password = document.getElementById('password').value;
         authError.textContent = '';
         try {
-            const userData = await fetchApi('/auth/login', {
-                method: 'POST',
-                body: JSON.stringify({ username, password })
-            });
+            const userData = await fetchApi('/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) });
             currentUser = { username: userData.username, id: userData.id };
             sessionStorage.setItem('fonds_currentUser_cogm_db', JSON.stringify(currentUser));
             
@@ -507,6 +400,10 @@
             appContainerEl.style.display = 'flex';
             loggedInUserDisplay.textContent = `Utilisateur: ${currentUser.username}`;
             
+            if (currentUser.username.toLowerCase() === 'admin') {
+                navUtilisateursLink.style.display = 'flex';
+            }
+
             await loadInitialData();
             showPage(sessionStorage.getItem('fonds_lastActivePage_cogm_db') || 'accueil');
         } catch (error) {
@@ -514,493 +411,225 @@
         }
     }
 
-    function showResetPasswordForm() {
-        loginFormPart.style.display = 'none';
-        resetPasswordFormPart.style.display = 'block';
-    }
-
-    function showLoginForm() {
-        resetPasswordFormPart.style.display = 'none';
-        loginFormPart.style.display = 'block';
-    }
-
-    async function processPasswordReset() {
-        const username = resetUsernameInput.value.trim();
-        const newPassword = resetNewPasswordInput.value;
-        const confirmPassword = resetConfirmPasswordInput.value;
-        resetStatus.textContent = '';
-        resetStatus.className = 'status-message';
-
-        if (!username) { resetStatus.textContent = "Veuillez entrer votre nom d'utilisateur."; resetStatus.classList.add('error'); return; }
-        if (newPassword.length < 6) { resetStatus.textContent = "Le mot de passe doit comporter au moins 6 caractères."; resetStatus.classList.add('error'); return; }
-        if (newPassword !== confirmPassword) { resetStatus.textContent = "Les mots de passe ne correspondent pas."; resetStatus.classList.add('error'); return; }
-        
-        try {
-            const response = await fetchApi('/auth/reset-password', {
-                method: 'POST', body: JSON.stringify({ username, newPassword })
-            });
-            resetStatus.textContent = response.message || "Mot de passe réinitialisé !";
-            resetStatus.classList.add('success');
-            setTimeout(() => { showLoginForm(); }, 3000);
-        } catch (error) {
-            resetStatus.textContent = error.message || "Erreur lors de la réinitialisation.";
-            resetStatus.classList.add('error');
-        }
-    }
-
     async function logout() {
         currentUser = null;
         sessionStorage.clear();
         appContainerEl.style.display = 'none';
-        authPageEl.style.display = 'block';   
-        showLoginForm();                      
+        authPageEl.style.display = 'block';
+        navUtilisateursLink.style.display = 'none';
         document.getElementById('username').value = '';
         document.getElementById('password').value = '';
-        entrees = []; sorties = [];
-        renderAll();
+        entrees = []; sorties = []; users = [];
         document.body.style.justifyContent = 'center';
+    }
+    
+    function showPage(pageId) {
+        cancelAllEdits();
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        const targetPage = document.getElementById(pageId + 'Page');
+        if (targetPage) {
+            targetPage.classList.add('active');
+        } else {
+            document.getElementById('accueilPage').classList.add('active');
+            pageId = 'accueil';
+        }
+        
+        document.querySelectorAll('.sidebar-nav a').forEach(link => link.classList.remove('active'));
+        document.querySelector(`.sidebar-nav a[onclick="showPage('${pageId}')"]`)?.classList.add('active');
+
+        sessionStorage.setItem('fonds_lastActivePage_cogm_db', pageId);
+
+        if (pageId === 'utilisateurs') {
+            loadUsers();
+        } else {
+            renderAll();
+        }
+    }
+    
+    function cancelAllEdits() {
+        if(editingEntreeId) cancelEditEntree();
+        if(editingSortieId) cancelEditSortie();
+        if(editingUserId) cancelEditUtilisateur();
     }
 
     async function loadInitialData(isManualRefresh = false) {
         if (!currentUser || isLoadingData) return;
         isLoadingData = true;
         refreshDataButton.disabled = true;
-
         try {
             if (typesOffrandeGlobaux.length === 0 || isManualRefresh) {
                 typesOffrandeGlobaux = await fetchApi('/meta/types-offrandes');
                 populateTypeOffrandeDropdowns();
             }
-            const [loadedEntrees, loadedSorties] = await Promise.all([ fetchApi('/entrees'), fetchApi('/sorties') ]);
-            entrees = (loadedEntrees || []).sort((a,b) => new Date(b.date_entree) - new Date(a.date_entree) || b.id - a.id);
-            sorties = (loadedSorties || []).sort((a,b) => new Date(b.date_sortie) - new Date(a.date_sortie) || b.id - a.id);
+            [entrees, sorties] = await Promise.all([fetchApi('/entrees'), fetchApi('/sorties')]);
+            entrees.sort((a,b) => new Date(b.date_entree) - new Date(a.date_entree) || b.id - a.id);
+            sorties.sort((a,b) => new Date(b.date_sortie) - new Date(a.date_sortie) || b.id - a.id);
             populateInventoryDateFilters();
             renderAll();
-        } catch (error) {
-            console.error("Erreur lors du chargement des données:", error);
-        } finally {
-            isLoadingData = false;
-            refreshDataButton.disabled = false;
-        }
+        } catch (error) { console.error("Erreur chargement données:", error);
+        } finally { isLoadingData = false; refreshDataButton.disabled = false; }
     }
-
     async function manualRefreshData() { await loadInitialData(true); }
-    
-    function showPage(pageId) {
-        if (editingEntreeId) cancelEditEntree();
-        if (editingSortieId) cancelEditSortie();
 
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        const targetPage = document.getElementById(pageId + 'Page');
-        if (targetPage) targetPage.classList.add('active'); 
-        else { document.getElementById('accueilPage').classList.add('active'); pageId = 'accueil'; }
-        
-        document.querySelectorAll('.sidebar-nav a').forEach(link => link.classList.remove('active'));
-        document.querySelector(`.sidebar-nav a[onclick="showPage('${pageId}')"]`)?.classList.add('active');
-
-        sessionStorage.setItem('fonds_lastActivePage_cogm_db', pageId);
-        renderAll();
-    }
-
-    function validateTransactionForm(data, statusElement) {
-        statusElement.textContent = '';
-        const today = new Date();
-        today.setHours(23, 59, 59, 999);
-        const selectedDate = new Date(data.date);
-
-        if (!data.date) {
-            statusElement.textContent = "Veuillez sélectionner une date.";
-            return false;
-        }
-        if (selectedDate > today) {
-            statusElement.textContent = "La date ne peut pas être dans le futur.";
-            return false;
-        }
-        if (isNaN(data.montant) || data.montant <= 0) {
-            statusElement.textContent = "La somme doit être un nombre strictement positif.";
-            return false;
-        }
-        return true;
-    }
-
-    if(formEntree) formEntree.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const entreeData = { 
-            code: entreeCodeInput.value, date_entree: document.getElementById('entreeDate').value, 
-            type_offrande: entreeTypeOffrandeSelect.value, montant: parseFloat(document.getElementById('entreeSomme').value), 
-            devise: document.getElementById('entreeDevise').value, temoin: document.getElementById('entreeTemoin').value, 
-            commentaires: document.getElementById('entreeCommentaires').value, utilisateur_id: currentUser.id 
-        };
-
-        if (!validateTransactionForm({ date: entreeData.date_entree, montant: entreeData.montant }, entreeFormStatus)) return;
-
-        try {
-            if (editingEntreeId) {
-                const updatedEntree = await fetchApi(`/entrees/${editingEntreeId}`, { method: 'PUT', body: JSON.stringify(entreeData) });
-                const index = entrees.findIndex(item => item.id === editingEntreeId);
-                if (index !== -1) entrees[index] = updatedEntree;
-                cancelEditEntree();
-            } else {
-                const nouvelleEntree = await fetchApi('/entrees', { method: 'POST', body: JSON.stringify(entreeData) });
-                entrees.unshift(nouvelleEntree);
-                cancelEditEntree();
-            }
-            renderAll();
-        } catch (error) { 
-            entreeFormStatus.textContent = "Erreur du serveur. Veuillez réessayer.";
-        }
-    });
-
-    function renderEntreesTable() { 
-        tableEntreesBody.innerHTML = ''; 
-        entrees.forEach(entree => { 
-            const row = tableEntreesBody.insertRow(); 
-            row.insertCell().textContent = entree.code; 
-            row.insertCell().textContent = new Date(entree.date_entree).toLocaleDateString('fr-CA'); 
-            row.insertCell().textContent = entree.type_offrande; 
-            row.insertCell().textContent = `${parseFloat(entree.montant).toFixed(2)} ${entree.devise}`; 
-            row.insertCell().textContent = entree.temoin || '-'; 
-            row.insertCell().textContent = entree.commentaires || '-'; 
-            
-            const actionCell = row.insertCell(); 
-            actionCell.innerHTML = `
-                <div class="action-buttons">
-                    <button class="action-button edit-btn" onclick="startEditEntree(${entree.id})">Modif.</button>
-                    <button class="action-button delete-btn" onclick="deleteEntree(${entree.id})">Suppr.</button>
-                </div>`;
-        });
-    }
-
-    function startEditEntree(id) {
-        const entree = entrees.find(e => e.id === id);
-        if (!entree) return;
-        cancelEditSortie();
-        editingEntreeId = id;
-        
-        document.getElementById('entreeDate').value = new Date(entree.date_entree).toISOString().split('T')[0];
-        entreeCodeInput.value = entree.code;
-        entreeTypeOffrandeSelect.value = entree.type_offrande;
-        document.getElementById('entreeSomme').value = entree.montant;
-        document.getElementById('entreeDevise').value = entree.devise;
-        document.getElementById('entreeTemoin').value = entree.temoin;
-        document.getElementById('entreeCommentaires').value = entree.commentaires;
-        
-        submitEntreeBtn.textContent = 'Mettre à jour';
-        cancelEditEntreeBtn.style.display = 'inline-block';
-        entreeFormStatus.textContent = '';
-        formEntree.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function cancelEditEntree() {
-        editingEntreeId = null;
-        formEntree.reset();
-        submitEntreeBtn.textContent = 'Ajouter Entrée';
-        cancelEditEntreeBtn.style.display = 'none';
-        entreeFormStatus.textContent = '';
-        updateEntreeCode();
-    }
-
-    async function deleteEntree(id) {
-        if (editingEntreeId === id) {
-            alert("Veuillez d'abord annuler la modification en cours.");
-            return;
-        }
-        if (confirm('Voulez-vous vraiment supprimer cette entrée ?')) {
-            try {
-                await fetchApi(`/entrees/${id}`, { method: 'DELETE' });
-                entrees = entrees.filter(e => e.id !== id);
-                renderAll();
-            } catch (error) { console.error("Erreur suppression d'entrée:", error); }
-        }
-    }
-
-    if(formSortie) formSortie.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const sortieData = { 
-            code: sortieCodeInput.value, date_sortie: document.getElementById('sortieDate').value, 
-            type_transaction: sortieTypeTransactionSelect.value, montant: parseFloat(document.getElementById('sortieSomme').value), 
-            devise: document.getElementById('sortieDevise').value, temoin: document.getElementById('sortieTemoin').value, 
-            commentaires: document.getElementById('sortieCommentaires').value, utilisateur_id: currentUser.id
-        };
-
-        if (!validateTransactionForm({ date: sortieData.date_sortie, montant: sortieData.montant }, sortieFormStatus)) return;
-        
-        try {
-            if (editingSortieId) {
-                const updatedSortie = await fetchApi(`/sorties/${editingSortieId}`, { method: 'PUT', body: JSON.stringify(sortieData) });
-                const index = sorties.findIndex(item => item.id === editingSortieId);
-                if (index !== -1) sorties[index] = updatedSortie;
-                cancelEditSortie();
-            } else {
-                const nouvelleSortie = await fetchApi('/sorties', { method: 'POST', body: JSON.stringify(sortieData) });
-                sorties.unshift(nouvelleSortie);
-                cancelEditSortie();
-            }
-            renderAll();
-        } catch (error) { 
-            sortieFormStatus.textContent = "Erreur du serveur. Veuillez réessayer.";
-        }
-    });
-
-    function renderSortiesTable() { 
-        tableSortiesBody.innerHTML = ''; 
-        sorties.forEach(sortie => { 
-            const row = tableSortiesBody.insertRow(); 
-            row.insertCell().textContent = sortie.code; 
-            row.insertCell().textContent = new Date(sortie.date_sortie).toLocaleDateString('fr-CA'); 
-            row.insertCell().textContent = sortie.type_transaction; 
-            row.insertCell().textContent = `${parseFloat(sortie.montant).toFixed(2)} ${sortie.devise}`; 
-            row.insertCell().textContent = sortie.temoin || '-'; 
-            row.insertCell().textContent = sortie.commentaires || '-'; 
-            
-            const actionCell = row.insertCell();
-            actionCell.innerHTML = `
-                <div class="action-buttons">
-                    <button class="action-button edit-btn" onclick="startEditSortie(${sortie.id})">Modif.</button>
-                    <button class="action-button delete-btn" onclick="deleteSortie(${sortie.id})">Suppr.</button>
-                </div>`;
-        });
-    }
-
-    function startEditSortie(id) {
-        const sortie = sorties.find(s => s.id === id);
-        if (!sortie) return;
-        cancelEditEntree();
-        editingSortieId = id;
-        
-        document.getElementById('sortieDate').value = new Date(sortie.date_sortie).toISOString().split('T')[0];
-        sortieCodeInput.value = sortie.code;
-        sortieTypeTransactionSelect.value = sortie.type_transaction;
-        document.getElementById('sortieSomme').value = sortie.montant;
-        document.getElementById('sortieDevise').value = sortie.devise;
-        document.getElementById('sortieTemoin').value = sortie.temoin;
-        document.getElementById('sortieCommentaires').value = sortie.commentaires;
-        
-        submitSortieBtn.textContent = 'Mettre à jour';
-        cancelEditSortieBtn.style.display = 'inline-block';
-        sortieFormStatus.textContent = '';
-        formSortie.scrollIntoView({ behavior: 'smooth' });
-    }
-    
-    function cancelEditSortie() {
-        editingSortieId = null;
-        formSortie.reset();
-        submitSortieBtn.textContent = 'Ajouter Sortie';
-        cancelEditSortieBtn.style.display = 'none';
-        sortieFormStatus.textContent = '';
-        updateSortieCode();
-    }
-
-    async function deleteSortie(id) {
-        if (editingSortieId === id) {
-            alert("Veuillez d'abord annuler la modification en cours.");
-            return;
-        }
-        if (confirm('Voulez-vous vraiment supprimer cette sortie ?')) {
-            try {
-                await fetchApi(`/sorties/${id}`, { method: 'DELETE' });
-                sorties = sorties.filter(s => s.id !== id);
-                renderAll();
-            } catch (error) { console.error("Erreur suppression de sortie:", error); }
-        }
-    }
-    
     function renderAll() {
-        const activePageId = document.querySelector('.page.active')?.id || 'accueilPage';
-
-        if(appContainerEl.style.display === 'none') return;
+        const activePage = document.querySelector('.page.active');
+        if (!activePage || !currentUser) return;
 
         updatePageTotals();
         updateGlobalBalanceDisplay();
-        
-        if (activePageId === 'entreesPage') {
-            updateEntreeCode();
-            renderEntreesTable();
-        }
-        if (activePageId === 'sortiesPage') {
-            updateSortieCode();
-            renderSortiesTable();
-        }
-        if (activePageId === 'inventairePage') {
-            renderInventairePage();
-        }
-        if (activePageId === 'accueilPage') {
-            renderAccueilPage();
+
+        switch (activePage.id) {
+            case 'entreesPage': renderEntreesTable(); updateEntreeCode(); break;
+            case 'sortiesPage': renderSortiesTable(); updateSortieCode(); break;
+            case 'inventairePage': renderInventairePage(); break;
+            case 'accueilPage': renderAccueilPage(); break;
+            case 'utilisateursPage': renderUsersTable(); break;
         }
     }
-    
-    function populateTypeOffrandeDropdowns() {
-        const selects = [entreeTypeOffrandeSelect, sortieTypeTransactionSelect, accueilTypeOffrandeFilterSelect];
-        selects.forEach(select => {
-            if(!select) return;
-            const currentVal = select.value;
-            let optionsHtml = '';
-            if (select === accueilTypeOffrandeFilterSelect) {
-                optionsHtml += '<option value="tous">Toutes les catégories</option>';
+
+    // AUTH
+    function showResetPasswordForm() { loginFormPart.style.display = 'none'; resetPasswordFormPart.style.display = 'block'; }
+    function showLoginForm() { resetPasswordFormPart.style.display = 'none'; loginFormPart.style.display = 'block'; }
+    async function processPasswordReset() {
+        const username = document.getElementById('resetUsername').value.trim();
+        const newPassword = document.getElementById('resetNewPassword').value;
+        const confirmPassword = document.getElementById('resetConfirmPassword').value;
+        const resetStatus = document.getElementById('resetStatus');
+        resetStatus.textContent = '';
+        if (!username || !newPassword) { resetStatus.textContent = "Tous les champs sont requis."; return; }
+        if (newPassword !== confirmPassword) { resetStatus.textContent = "Les mots de passe ne correspondent pas."; return; }
+        try {
+            await fetchApi('/auth/reset-password', { method: 'POST', body: JSON.stringify({ username, newPassword }) });
+            resetStatus.textContent = "Mot de passe réinitialisé !";
+            setTimeout(showLoginForm, 2000);
+        } catch (error) { resetStatus.textContent = error.message; }
+    }
+
+    // UTILISATEURS
+    async function loadUsers() {
+        if (!currentUser || currentUser.username.toLowerCase() !== 'admin') return;
+        try {
+            users = await fetchApi('/users');
+            renderUsersTable();
+        } catch (error) { console.error("Impossible de charger les utilisateurs:", error); }
+    }
+    function renderUsersTable() {
+        tableUtilisateursBody.innerHTML = '';
+        users.sort((a,b) => a.id - b.id).forEach(user => {
+            const row = tableUtilisateursBody.insertRow();
+            row.insertCell().textContent = user.id;
+            row.insertCell().textContent = user.username;
+            row.insertCell().textContent = new Date(user.created_at).toLocaleDateString('fr-FR');
+            const actionCell = row.insertCell();
+            if (user.username.toLowerCase() !== 'admin') {
+                actionCell.innerHTML = `<div class="action-buttons"><button class="action-button edit-btn" onclick="startEditUser(${user.id})">Modifier</button></div>`;
             }
-            typesOffrandeGlobaux.forEach(type => {
-                optionsHtml += `<option value="${type}">${type}</option>`;
-            });
-            if (select === sortieTypeTransactionSelect) {
-                optionsHtml += '<option value="Autre Dépense">Autre Dépense</option>';
+        });
+    }
+    if (formUtilisateur) formUtilisateur.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        utilisateurFormStatus.textContent = '';
+        const username = document.getElementById('utilisateurUsername').value;
+        const password = document.getElementById('utilisateurPassword').value;
+        let userData = { username };
+        if (password) {
+            if (password.length < 6) { utilisateurFormStatus.textContent = "Le mot de passe doit faire au moins 6 caractères."; return; }
+            userData.password = password;
+        }
+        try {
+            if (editingUserId) {
+                const updatedUser = await fetchApi(`/users/${editingUserId}`, { method: 'PUT', body: JSON.stringify(userData) });
+                const index = users.findIndex(u => u.id === editingUserId);
+                if (index !== -1) users[index] = updatedUser;
+            } else {
+                if (!password) { utilisateurFormStatus.textContent = "Un mot de passe est requis pour un nouvel utilisateur."; return; }
+                const newUser = await fetchApi('/users', { method: 'POST', body: JSON.stringify(userData) });
+                users.push(newUser);
             }
-            select.innerHTML = optionsHtml;
-            if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) {
-                select.value = currentVal;
-            }
-        });
+            cancelEditUtilisateur();
+            renderUsersTable();
+        } catch (error) { utilisateurFormStatus.textContent = error.message || "Erreur du serveur."; }
+    });
+    function startEditUser(userId) {
+        cancelAllEdits();
+        const user = users.find(u => u.id === userId);
+        if (!user) return;
+        editingUserId = userId;
+        document.getElementById('utilisateurId').value = user.id;
+        document.getElementById('utilisateurUsername').value = user.username;
+        document.getElementById('utilisateurPassword').value = ''; 
+        submitUtilisateurBtn.textContent = 'Mettre à jour';
+        cancelEditUtilisateurBtn.style.display = 'inline-block';
+        formUtilisateur.scrollIntoView({ behavior: 'smooth' });
     }
+    function cancelEditUtilisateur() {
+        editingUserId = null;
+        formUtilisateur.reset();
+        submitUtilisateurBtn.textContent = 'Ajouter Utilisateur';
+        cancelEditUtilisateurBtn.style.display = 'none';
+        utilisateurFormStatus.textContent = '';
+    }
+
+    // ENTREES
+    if(formEntree) formEntree.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const entreeData = { code: document.getElementById('entreeCode').value, date_entree: document.getElementById('entreeDate').value, type_offrande: document.getElementById('entreeTypeOffrande').value, montant: parseFloat(document.getElementById('entreeSomme').value), devise: document.getElementById('entreeDevise').value, temoin: document.getElementById('entreeTemoin').value, commentaires: document.getElementById('entreeCommentaires').value, utilisateur_id: currentUser.id };
+        if (!validateTransactionForm({date: entreeData.date_entree, montant: entreeData.montant}, entreeFormStatus)) return;
+        try {
+            const result = editingEntreeId ? await fetchApi(`/entrees/${editingEntreeId}`, { method: 'PUT', body: JSON.stringify(entreeData) }) : await fetchApi('/entrees', { method: 'POST', body: JSON.stringify(entreeData) });
+            await loadInitialData(true); cancelEditEntree();
+        } catch (error) { entreeFormStatus.textContent = error.message; }
+    });
+    function renderEntreesTable() { tableEntreesBody.innerHTML = ''; entrees.forEach(entree => { const row = tableEntreesBody.insertRow(); row.insertCell().textContent = entree.code; row.insertCell().textContent = new Date(entree.date_entree).toLocaleDateString('fr-CA'); row.insertCell().textContent = entree.type_offrande; row.insertCell().textContent = `${parseFloat(entree.montant).toFixed(2)} ${entree.devise}`; row.insertCell().textContent = entree.temoin || '-'; row.insertCell().textContent = entree.commentaires || '-'; row.insertCell().innerHTML = `<div class="action-buttons"><button class="action-button edit-btn" onclick="startEditEntree(${entree.id})">Modif.</button><button class="action-button delete-btn" onclick="deleteEntree(${entree.id})">Suppr.</button></div>`; }); }
+    function startEditEntree(id) { cancelAllEdits(); const entree = entrees.find(e => e.id === id); if (!entree) return; editingEntreeId = id; document.getElementById('entreeDate').value = new Date(entree.date_entree).toISOString().split('T')[0]; document.getElementById('entreeCode').value = entree.code; document.getElementById('entreeTypeOffrande').value = entree.type_offrande; document.getElementById('entreeSomme').value = entree.montant; document.getElementById('entreeDevise').value = entree.devise; document.getElementById('entreeTemoin').value = entree.temoin; document.getElementById('entreeCommentaires').value = entree.commentaires; submitEntreeBtn.textContent = 'Mettre à jour'; cancelEditEntreeBtn.style.display = 'inline-block'; formEntree.scrollIntoView({ behavior: 'smooth' }); }
+    function cancelEditEntree() { editingEntreeId = null; formEntree.reset(); submitEntreeBtn.textContent = 'Ajouter Entrée'; cancelEditEntreeBtn.style.display = 'none'; entreeFormStatus.textContent = ''; updateEntreeCode(); }
+    async function deleteEntree(id) { if (confirm('Supprimer cette entrée ?')) { try { await fetchApi(`/entrees/${id}`, { method: 'DELETE' }); await loadInitialData(true); } catch (error) { console.error("Erreur suppression d'entrée:", error); } } }
+
+    // SORTIES
+    if(formSortie) formSortie.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const sortieData = { code: document.getElementById('sortieCode').value, date_sortie: document.getElementById('sortieDate').value, type_transaction: document.getElementById('sortieTypeTransaction').value, montant: parseFloat(document.getElementById('sortieSomme').value), devise: document.getElementById('sortieDevise').value, temoin: document.getElementById('sortieTemoin').value, commentaires: document.getElementById('sortieCommentaires').value, utilisateur_id: currentUser.id };
+        if (!validateTransactionForm({date: sortieData.date_sortie, montant: sortieData.montant}, sortieFormStatus)) return;
+        try {
+            const result = editingSortieId ? await fetchApi(`/sorties/${editingSortieId}`, { method: 'PUT', body: JSON.stringify(sortieData) }) : await fetchApi('/sorties', { method: 'POST', body: JSON.stringify(sortieData) });
+            await loadInitialData(true); cancelEditSortie();
+        } catch (error) { sortieFormStatus.textContent = error.message; }
+    });
+    function renderSortiesTable() { tableSortiesBody.innerHTML = ''; sorties.forEach(sortie => { const row = tableSortiesBody.insertRow(); row.insertCell().textContent = sortie.code; row.insertCell().textContent = new Date(sortie.date_sortie).toLocaleDateString('fr-CA'); row.insertCell().textContent = sortie.type_transaction; row.insertCell().textContent = `${parseFloat(sortie.montant).toFixed(2)} ${sortie.devise}`; row.insertCell().textContent = sortie.temoin || '-'; row.insertCell().textContent = sortie.commentaires || '-'; row.insertCell().innerHTML = `<div class="action-buttons"><button class="action-button edit-btn" onclick="startEditSortie(${sortie.id})">Modif.</button><button class="action-button delete-btn" onclick="deleteSortie(${sortie.id})">Suppr.</button></div>`; }); }
+    function startEditSortie(id) { cancelAllEdits(); const sortie = sorties.find(s => s.id === id); if (!sortie) return; editingSortieId = id; document.getElementById('sortieDate').value = new Date(sortie.date_sortie).toISOString().split('T')[0]; document.getElementById('sortieCode').value = sortie.code; document.getElementById('sortieTypeTransaction').value = sortie.type_transaction; document.getElementById('sortieSomme').value = sortie.montant; document.getElementById('sortieDevise').value = sortie.devise; document.getElementById('sortieTemoin').value = sortie.temoin; document.getElementById('sortieCommentaires').value = sortie.commentaires; submitSortieBtn.textContent = 'Mettre à jour'; cancelEditSortieBtn.style.display = 'inline-block'; formSortie.scrollIntoView({ behavior: 'smooth' }); }
+    function cancelEditSortie() { editingSortieId = null; formSortie.reset(); submitSortieBtn.textContent = 'Ajouter Sortie'; cancelEditSortieBtn.style.display = 'none'; sortieFormStatus.textContent = ''; updateSortieCode(); }
+    async function deleteSortie(id) { if (confirm('Supprimer cette sortie ?')) { try { await fetchApi(`/sorties/${id}`, { method: 'DELETE' }); await loadInitialData(true); } catch (error) { console.error("Erreur suppression de sortie:", error); } } }
+
+    // HELPERS & UI
+    function populateTypeOffrandeDropdowns() { const selects = [document.getElementById('entreeTypeOffrande'), document.getElementById('sortieTypeTransaction'), document.getElementById('accueilTypeOffrandeFilter')]; selects.forEach(select => { if(!select) return; let optionsHtml = ''; if (select.id === 'accueilTypeOffrandeFilter') optionsHtml += '<option value="tous">Toutes les catégories</option>'; typesOffrandeGlobaux.forEach(type => optionsHtml += `<option value="${type}">${type}</option>`); if (select.id === 'sortieTypeTransaction') optionsHtml += '<option value="Autre Dépense">Autre Dépense</option>'; select.innerHTML = optionsHtml; }); }
+    function updateEntreeCode() { if(editingEntreeId) return; const nextId = (entrees.length > 0 ? Math.max(0, ...entrees.map(e => parseInt(String(e.code || "ENT-0").split('-').pop()) || 0)) : 0) + 1; document.getElementById('entreeCode').value = `ENT-${String(nextId).padStart(4, '0')}`; }
+    function updateSortieCode() { if(editingSortieId) return; const nextId = (sorties.length > 0 ? Math.max(0, ...sorties.map(s => parseInt(String(s.code || "SRT-0").split('-').pop()) || 0)) : 0) + 1; document.getElementById('sortieCode').value = `SRT-${String(nextId).padStart(4, '0')}`; }
+    function calculateTotalsByCurrency(currentEntrees, currentSorties) { const totals = { USD: { entrees: 0, sorties: 0, balance: 0 }, CDF: { entrees: 0, sorties: 0, balance: 0 } }; currentEntrees.forEach(e => { if (totals[e.devise]) totals[e.devise].entrees += parseFloat(e.montant); }); currentSorties.forEach(s => { if (totals[s.devise]) totals[s.devise].sorties += parseFloat(s.montant); }); for (const currency in totals) { totals[currency].balance = totals[currency].entrees - totals[currency].sorties; } return totals; }
+    function updatePageTotals() { const totals = calculateTotalsByCurrency(entrees, sorties); entreesPageTotalUSD.textContent = `Entrées USD: ${totals.USD.entrees.toFixed(2)} $`; entreesPageTotalCDF.textContent = `Entrées CDF: ${totals.CDF.entrees.toFixed(2)} FC`; sortiesPageTotalUSD.textContent = `Sorties USD: ${totals.USD.sorties.toFixed(2)} $`; sortiesPageTotalCDF.textContent = `Sorties CDF: ${totals.CDF.sorties.toFixed(2)} FC`; }
+    function updateGlobalBalanceDisplay() { const totals = calculateTotalsByCurrency(entrees, sorties); globalBalanceDisplay.innerHTML = `<span class="balance-label">Solde Total Disponible</span><span class="balance-value usd">${totals.USD.balance.toFixed(2)} $</span><span class="balance-value cdf">${totals.CDF.balance.toFixed(2)} FC</span>`; }
+    function filterAccueilByCurrency(currency) { currentAccueilCurrencyFilter = currency; document.querySelectorAll('.accueil-controls .btn-group button').forEach(btn => btn.classList.remove('active')); document.getElementById(currency ? `btnShow${currency}` : 'btnShowAll').classList.add('active'); renderAccueilPage(); }
+    function renderAccueilPage() { if (!accueilIndicatorsGrid) return; accueilIndicatorsGrid.innerHTML = ''; const selectedType = accueilTypeOffrandeFilterSelect.value; const typesToDisplay = selectedType === 'tous' ? typesOffrandeGlobaux : [selectedType]; typesToDisplay.forEach(type => { const entreesFiltrees = entrees.filter(e => e.type_offrande === type); const sortiesFiltrees = sorties.filter(s => s.type_transaction === type); createIndicatorCard(type, calculateTotalsByCurrency(entreesFiltrees, sortiesFiltrees)); }); }
+    function createIndicatorCard(title, totals) { const card = document.createElement('div'); card.className = 'indicator-card'; card.innerHTML = `<h3>${title}</h3><div class="card-content"></div>`; const content = card.querySelector('.card-content'); const createLine = (curr, data) => { const line = document.createElement('div'); line.innerHTML = `<p class="balance-amount ${data.balance > 0 ? 'positive' : 'negative'}">${data.balance.toFixed(2)} ${curr === 'USD' ? '$' : 'FC'}</p><p class="details">Entrées: ${data.entrees.toFixed(2)} | Sorties: ${data.sorties.toFixed(2)}</p>`; return line; }; if (currentAccueilCurrencyFilter !== 'CDF') content.appendChild(createLine('USD', totals.USD)); if (currentAccueilCurrencyFilter === null && totals.USD.balance !== 0 && totals.CDF.balance !== 0) content.appendChild(document.createElement('hr')); if (currentAccueilCurrencyFilter !== 'USD') content.appendChild(createLine('CDF', totals.CDF)); accueilIndicatorsGrid.appendChild(card); }
+    function populateInventoryDateFilters() { if (!invAnneeSelect) return; const years = new Set([...entrees, ...sorties].map(t => new Date(t.date_entree || t.date_sortie).getFullYear())); if (years.size === 0) years.add(new Date().getFullYear()); invAnneeSelect.innerHTML = Array.from(years).sort((a,b)=>b-a).map(y => `<option value="${y}">${y}</option>`).join(''); const moisNoms = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]; invMoisSelect.innerHTML = '<option value="tous">Tous les mois</option>' + moisNoms.map((m, i) => `<option value="${i+1}">${m}</option>`).join(''); }
+    function renderInventairePage() { if (!invTableEntreesDetailBody) return; const annee = parseInt(invAnneeSelect.value); const mois = invMoisSelect.value === "tous" ? null : parseInt(invMoisSelect.value); const entreesFiltrees = entrees.filter(e => new Date(e.date_entree).getFullYear() === annee && (mois === null || (new Date(e.date_entree).getMonth() + 1) === mois)); const sortiesFiltrees = sorties.filter(s => new Date(s.date_sortie).getFullYear() === annee && (mois === null || (new Date(s.date_sortie).getMonth() + 1) === mois)); const totals = calculateTotalsByCurrency(entreesFiltrees, sortiesFiltrees); document.getElementById('invTotalEntreesUSD').textContent = `${totals.USD.entrees.toFixed(2)} $`; document.getElementById('invTotalSortiesUSD').textContent = `${totals.USD.sorties.toFixed(2)} $`; const varianceUSD = document.getElementById('invVarianceUSD'); varianceUSD.textContent = `${totals.USD.balance.toFixed(2)} $`; varianceUSD.className = `variance-${totals.USD.balance > 0.001 ? 'positive' : totals.USD.balance < -0.001 ? 'negative' : 'neutral'}`; document.getElementById('invTotalEntreesCDF').textContent = `${totals.CDF.entrees.toFixed(2)} FC`; document.getElementById('invTotalSortiesCDF').textContent = `${totals.CDF.sorties.toFixed(2)} FC`; const varianceCDF = document.getElementById('invVarianceCDF'); varianceCDF.textContent = `${totals.CDF.balance.toFixed(2)} FC`; varianceCDF.className = `variance-${totals.CDF.balance > 0.001 ? 'positive' : totals.CDF.balance < -0.001 ? 'negative' : 'neutral'}`; invTableEntreesDetailBody.innerHTML = entreesFiltrees.map(e => `<tr><td>${e.code}</td><td>${new Date(e.date_entree).toLocaleDateString('fr-CA')}</td><td>${e.type_offrande}</td><td>${parseFloat(e.montant).toFixed(2)} ${e.devise}</td><td>${e.temoin||'-'}</td><td>${e.commentaires||'-'}</td></tr>`).join(''); invTableSortiesDetailBody.innerHTML = sortiesFiltrees.map(s => `<tr><td>${s.code}</td><td>${new Date(s.date_sortie).toLocaleDateString('fr-CA')}</td><td>${s.type_transaction}</td><td>${parseFloat(s.montant).toFixed(2)} ${s.devise}</td><td>${s.temoin||'-'}</td><td>${s.commentaires||'-'}</td></tr>`).join(''); }
     
-    function updateEntreeCode() {
-        if(editingEntreeId) return;
-        const prefix = "ENT";
-        const nextId = (entrees.length > 0 ? Math.max(0, ...entrees.map(e => parseInt(String(e.code || "ENT-0").split('-').pop()) || 0)) : 0) + 1;
-        if(entreeCodeInput) entreeCodeInput.value = `${prefix}-${String(nextId).padStart(4, '0')}`;
-    }
-
-    function updateSortieCode() {
-        if(editingSortieId) return;
-        const prefix = "SRT";
-        const nextId = (sorties.length > 0 ? Math.max(0, ...sorties.map(s => parseInt(String(s.code || "SRT-0").split('-').pop()) || 0)) : 0) + 1;
-        if(sortieCodeInput) sortieCodeInput.value = `${prefix}-${String(nextId).padStart(4, '0')}`;
-    }
-
-    function calculateTotalsByCurrency(currentEntrees, currentSorties) {
-        const totals = { USD: { entrees: 0, sorties: 0, balance: 0 }, CDF: { entrees: 0, sorties: 0, balance: 0 } };
-        currentEntrees.forEach(e => { if (totals[e.devise]) totals[e.devise].entrees += parseFloat(e.montant); });
-        currentSorties.forEach(s => { if (totals[s.devise]) totals[s.devise].sorties += parseFloat(s.montant); });
-        for (const currency in totals) { totals[currency].balance = totals[currency].entrees - totals[currency].sorties; }
-        return totals;
-    }
-    
-    function updatePageTotals() {
-        const totals = calculateTotalsByCurrency(entrees, sorties);
-        entreesPageTotalUSD.textContent = `Entrées USD: ${totals.USD.entrees.toFixed(2)} $`; 
-        entreesPageTotalCDF.textContent = `Entrées CDF: ${totals.CDF.entrees.toFixed(2)} FC`;
-        sortiesPageTotalUSD.textContent = `Sorties USD: ${totals.USD.sorties.toFixed(2)} $`; 
-        sortiesPageTotalCDF.textContent = `Sorties CDF: ${totals.CDF.sorties.toFixed(2)} FC`;
-    }
-
-    function updateGlobalBalanceDisplay() {
-        const totals = calculateTotalsByCurrency(entrees, sorties);
-        globalBalanceDisplay.innerHTML = `
-            <span class="balance-label">Solde Total Disponible</span>
-            <span class="balance-value usd">${totals.USD.balance.toFixed(2)} $</span>
-            <span class="balance-value cdf">${totals.CDF.balance.toFixed(2)} FC</span>
-        `;
-    }
-
-    function filterAccueilByCurrency(currency) { 
-        currentAccueilCurrencyFilter = currency; 
-        document.querySelectorAll('.accueil-controls .btn-group button').forEach(btn => btn.classList.remove('active'));
-        if(currency === 'USD') document.getElementById('btnShowUSD').classList.add('active');
-        else if(currency === 'CDF') document.getElementById('btnShowCDF').classList.add('active');
-        else document.getElementById('btnShowAll').classList.add('active');
-        renderAccueilPage(); 
-    }
-
-    function renderAccueilPage() {
-        if (!accueilIndicatorsGrid) return;
-        accueilIndicatorsGrid.innerHTML = '';
-        const selectedType = accueilTypeOffrandeFilterSelect.value;
-        const typesToDisplay = selectedType === 'tous' ? typesOffrandeGlobaux : [selectedType];
-        typesToDisplay.forEach(type => {
-            const entreesFiltrees = entrees.filter(e => e.type_offrande === type);
-            const sortiesFiltrees = sorties.filter(s => s.type_transaction === type);
-            const totalsForType = calculateTotalsByCurrency(entreesFiltrees, sortiesFiltrees);
-            createIndicatorCard(type, totalsForType);
-        });
-    }
-
-    function createIndicatorCard(title, totals) {
-        const cardHtml = `
-            <div class="indicator-card">
-                <h3>${title}</h3>
-                <div class="card-content">
-                    ${(currentAccueilCurrencyFilter !== 'CDF') ? `
-                        <div>
-                            <p class="balance-amount ${totals.USD.balance > 0 ? 'positive' : (totals.USD.balance < 0 ? 'negative' : 'neutral')}">${totals.USD.balance.toFixed(2)} $</p>
-                            <p class="details">Entrées: ${totals.USD.entrees.toFixed(2)} | Sorties: ${totals.USD.sorties.toFixed(2)}</p>
-                        </div>` : ''}
-                    ${(currentAccueilCurrencyFilter === null && (totals.USD.entrees > 0 || totals.USD.sorties > 0) && (totals.CDF.entrees > 0 || totals.CDF.sorties > 0)) ? '<hr style="margin:5px 0; border:0; border-top:1px solid var(--border-color)">' : ''}
-                    ${(currentAccueilCurrencyFilter !== 'USD') ? `
-                        <div>
-                            <p class="balance-amount ${totals.CDF.balance > 0 ? 'positive' : (totals.CDF.balance < 0 ? 'negative' : 'neutral')}">${totals.CDF.balance.toFixed(2)} FC</p>
-                            <p class="details">Entrées: ${totals.CDF.entrees.toFixed(2)} | Sorties: ${totals.CDF.sorties.toFixed(2)}</p>
-                        </div>` : ''}
-                </div>
-            </div>`;
-        accueilIndicatorsGrid.innerHTML += cardHtml;
-    }
-    
-    function populateInventoryDateFilters() {
-        if (!invAnneeSelect) return;
-        const years = new Set([...entrees, ...sorties].map(t => new Date(t.date_entree || t.date_sortie).getFullYear()));
-        if (years.size === 0) years.add(new Date().getFullYear());
-        invAnneeSelect.innerHTML = Array.from(years).sort((a,b)=>b-a).map(y => `<option value="${y}">${y}</option>`).join('');
-
-        const moisNoms = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-        invMoisSelect.innerHTML = '<option value="tous">Tous les mois</option>' + moisNoms.map((m, i) => `<option value="${i+1}">${m}</option>`).join('');
-    }
-
-    function renderInventairePage() {
-        if (!invTableEntreesDetailBody) return;
-        const annee = parseInt(invAnneeSelect.value);
-        const mois = invMoisSelect.value === "tous" ? null : parseInt(invMoisSelect.value);
-        const entreesFiltrees = entrees.filter(e => {
-            const date = new Date(e.date_entree);
-            return date.getFullYear() === annee && (mois === null || (date.getMonth() + 1) === mois);
-        });
-        const sortiesFiltrees = sorties.filter(s => {
-            const date = new Date(s.date_sortie);
-            return date.getFullYear() === annee && (mois === null || (date.getMonth() + 1) === mois);
-        });
-
-        const totals = calculateTotalsByCurrency(entreesFiltrees, sortiesFiltrees);
-        document.getElementById('invTotalEntreesUSD').textContent = `${totals.USD.entrees.toFixed(2)} $`;
-        document.getElementById('invTotalSortiesUSD').textContent = `${totals.USD.sorties.toFixed(2)} $`;
-        const varianceUSD = document.getElementById('invVarianceUSD');
-        varianceUSD.textContent = `${totals.USD.balance.toFixed(2)} $`;
-        varianceUSD.className = `variance-${totals.USD.balance > 0 ? 'positive' : totals.USD.balance < 0 ? 'negative' : 'neutral'}`;
-        
-        document.getElementById('invTotalEntreesCDF').textContent = `${totals.CDF.entrees.toFixed(2)} FC`;
-        document.getElementById('invTotalSortiesCDF').textContent = `${totals.CDF.sorties.toFixed(2)} FC`;
-        const varianceCDF = document.getElementById('invVarianceCDF');
-        varianceCDF.textContent = `${totals.CDF.balance.toFixed(2)} FC`;
-        varianceCDF.className = `variance-${totals.CDF.balance > 0 ? 'positive' : totals.CDF.balance < 0 ? 'negative' : 'neutral'}`;
-
-        invTableEntreesDetailBody.innerHTML = entreesFiltrees.map(e => `
-            <tr>
-                <td>${e.code}</td><td>${new Date(e.date_entree).toLocaleDateString('fr-CA')}</td>
-                <td>${e.type_offrande}</td><td>${parseFloat(e.montant).toFixed(2)} ${e.devise}</td>
-                <td>${e.temoin || '-'}</td><td>${e.commentaires || '-'}</td>
-            </tr>`).join('');
-        
-        invTableSortiesDetailBody.innerHTML = sortiesFiltrees.map(s => `
-            <tr>
-                <td>${s.code}</td><td>${new Date(s.date_sortie).toLocaleDateString('fr-CA')}</td>
-                <td>${s.type_transaction}</td><td>${parseFloat(s.montant).toFixed(2)} ${s.devise}</td>
-                <td>${s.temoin || '-'}</td><td>${s.commentaires || '-'}</td>
-            </tr>`).join('');
-    }
-
+    // DÉMARRAGE DE L'APPLICATION
     window.onload = async () => {
-        if (currentUser) {
-            authPageEl.style.display = 'none'; 
+        const storedUser = sessionStorage.getItem('fonds_currentUser_cogm_db');
+        if (storedUser) {
+            currentUser = JSON.parse(storedUser);
+            authPageEl.style.display = 'none';
             document.body.style.justifyContent = 'flex-start';
-            appContainerEl.style.display = 'flex'; 
+            appContainerEl.style.display = 'flex';
             loggedInUserDisplay.textContent = `Utilisateur: ${currentUser.username}`;
+            if (currentUser.username.toLowerCase() === 'admin') {
+                navUtilisateursLink.style.display = 'flex';
+            }
             await loadInitialData();
-            const lastPage = sessionStorage.getItem('fonds_lastActivePage_cogm_db') || 'accueil';
-            filterAccueilByCurrency(null);
-            showPage(lastPage);
-        } else {
-            authPageEl.style.display = 'block'; 
-            showLoginForm();
-            document.body.style.justifyContent = 'center'; 
-            appContainerEl.style.display = 'none';
+            showPage(sessionStorage.getItem('fonds_lastActivePage_cogm_db') || 'accueil');
         }
     };
+
 </script>
 
 </body>
