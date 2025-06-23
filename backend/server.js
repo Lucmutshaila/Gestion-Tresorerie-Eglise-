@@ -1,4 +1,4 @@
-// server.js (MODIFIÉ POUR POSTGRES ET AVEC ROUTEUR /api)
+// server.js (VERSION FINALE POUR POSTGRES)
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -21,116 +21,6 @@ const typesOffrandeValides = [
     "Offrande ordinaire", "Offrande d'adoration", "Offrande d'action de grace",
     "Offrande de construction", "Dime", "Dime des offrandes"
 ];
-
-async function initializeDatabase() {
-    let client;
-    try {
-        client = await pool.connect();
-        console.log('Connecté à la base de données PostgreSQL.');
-
-        // Création des tables (pas de changement ici)
-        await client.query(`CREATE TABLE IF NOT EXISTS users (...)`);
-        await client.query(`CREATE TABLE IF NOT EXISTS entrees (...)`);
-        await client.query(`CREATE TABLE IF NOT EXISTS sorties (...)`);
-
-        // Création de l'utilisateur admin (pas de changement ici)
-        const res = await client.query("SELECT COUNT(*) as count FROM users");
-        if (res.rows[0].count === '0') {
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash("admin123", salt);
-            await client.query("INSERT INTO users (username, password) VALUES ($1, $2)", ["admin", hashedPassword]);
-            console.log("Utilisateur 'admin' créé.");
-        }
-    } catch (err) {
-        console.error("ERREUR CRITIQUE BDD:", err);
-        process.exit(1);
-    } finally {
-        if (client) client.release();
-    }
-}
-
-// =========================================================
-// ==   CRÉATION D'UN ROUTEUR PRINCIPAL POUR L'API        ==
-// =========================================================
-const apiRouter = express.Router();
-
-// --- Routes d'Authentification ---
-apiRouter.post('/auth/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
-        if (result.rows.length === 0) return res.status(401).json({ message: "Identifiants incorrects." });
-        
-        const user = result.rows[0];
-        const isValid = await bcrypt.compare(password, user.password);
-        if (!isValid) return res.status(401).json({ message: "Identifiants incorrects." });
-        
-        res.json({ id: user.id, username: user.username });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Erreur serveur." });
-    }
-});
-
-apiRouter.post('/auth/reset-password', async (req, res) => {
-    // ... (votre code de reset-password ici, il est correct)
-});
-
-
-// --- Routes pour les Méta-données ---
-apiRouter.get('/meta/types-offrandes', (req, res) => {
-    res.json(typesOffrandeValides);
-});
-
-// --- Routes pour les Entrées (CRUD) ---
-apiRouter.get('/entrees', async (req, res) => { /* ... */ });
-apiRouter.post('/entrees', async (req, res) => { /* ... */ });
-apiRouter.put('/entrees/:id', async (req, res) => { /* ... */ });
-apiRouter.delete('/entrees/:id', async (req, res) => { /* ... */ });
-
-// --- Routes pour les Sorties (CRUD) ---
-apiRouter.get('/sorties', async (req, res) => { /* ... */ });
-apiRouter.post('/sorties', async (req, res) => { /* ... */ });
-apiRouter.put('/sorties/:id', async (req, res) => { /* ... */ });
-apiRouter.delete('/sorties/:id', async (req, res) => { /* ... */ });
-
-// On dit à notre application Express d'utiliser ce routeur
-// pour toutes les URLs qui commencent par /api
-app.use('/api', apiRouter);
-
-// =========================================================
-
-// ... Le reste du code (startServer, etc.)
-
-// Je vais coller le code complet et fonctionnel ci-dessous.
-Use code with caution.
-JavaScript
-Voici le code entier à copier-coller dans backend/server.js.
-Generated javascript
-// server.js (VERSION FINALE POUR POSTGRES AVEC ROUTEUR /api)
-const express = require('express');
-const { Pool } = require('pg');
-const cors = require('cors');
-const bcrypt = require('bcryptjs');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(cors());
-app.use(express.json());
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-
-const typesOffrandeValides = [
-    "Offrande ordinaire", "Offrande d'adoration", "Offrande d'action de grace",
-    "Offrande de construction", "Dime", "Dime des offrandes"
-];
-const typesSortieValides = [...typesOffrandeValides, "Autre Dépense"];
 
 async function initializeDatabase() {
     let client;
@@ -298,9 +188,14 @@ apiRouter.delete('/sorties/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-
 // On dit à Express d'utiliser ce routeur pour toutes les requêtes commençant par /api
 app.use('/api', apiRouter);
+
+// Gestion des routes non trouvées (doit être à la fin)
+app.use((req, res) => {
+    res.status(404).json({ message: "Route non trouvée." });
+});
+
 
 // Démarrage du serveur
 async function startServer() {
