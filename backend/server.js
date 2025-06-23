@@ -1,4 +1,4 @@
-// server.js (VERSION FINALE AVEC GESTION DES UTILISATEURS - CODE COMPLET)
+// server.js (VERSION FINALE SIMPLIFIÉE POUR RENDER)
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -22,22 +22,22 @@ const typesOffrandeValides = [
     "Offrande de construction", "Dime", "Dime des offrandes"
 ];
 
-// LA FONCTION MANQUANTE EST ICI
-async function initializeDatabase() {
+// Cette fonction vérifie et crée les tables après le démarrage du serveur.
+const setupDatabase = async () => {
     let client;
     try {
         client = await pool.connect();
-        console.log('Connecté à la base de données PostgreSQL.');
+        console.log('Connecté à PostgreSQL pour la configuration initiale.');
 
+        // Création des tables si elles n'existent pas
         await client.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 username VARCHAR(255) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-            )
+            );
         `);
-        console.log("Table 'users' vérifiée/créée.");
 
         await client.query(`
             CREATE TABLE IF NOT EXISTS entrees (
@@ -49,13 +49,11 @@ async function initializeDatabase() {
                 devise VARCHAR(10) NOT NULL,
                 temoin VARCHAR(255),
                 commentaires TEXT,
-                utilisateur_id INT,
-                created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (utilisateur_id) REFERENCES users(id) ON DELETE SET NULL
-            )
+                utilisateur_id INT REFERENCES users(id) ON DELETE SET NULL,
+                created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+            );
         `);
-        console.log("Table 'entrees' vérifiée/créée.");
-
+        
         await client.query(`
             CREATE TABLE IF NOT EXISTS sorties (
                 id SERIAL PRIMARY KEY,
@@ -66,29 +64,29 @@ async function initializeDatabase() {
                 devise VARCHAR(10) NOT NULL,
                 temoin VARCHAR(255),
                 commentaires TEXT NOT NULL,
-                utilisateur_id INT,
-                created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (utilisateur_id) REFERENCES users(id) ON DELETE SET NULL
-            )
+                utilisateur_id INT REFERENCES users(id) ON DELETE SET NULL,
+                created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+            );
         `);
-        console.log("Table 'sorties' vérifiée/créée.");
+        console.log("Toutes les tables ont été vérifiées/créées.");
 
-        const res = await client.query("SELECT COUNT(*) as count FROM users");
+        // Création de l'utilisateur admin par défaut
+        const res = await client.query("SELECT COUNT(*) as count FROM users WHERE username = 'admin'");
         if (res.rows[0].count === '0') {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash("admin123", salt);
             await client.query("INSERT INTO users (username, password) VALUES ($1, $2)", ["admin", hashedPassword]);
-            console.log("Utilisateur 'admin' créé.");
+            console.log("Utilisateur 'admin' créé avec le mot de passe 'admin123'.");
         }
     } catch (err) {
-        console.error("ERREUR CRITIQUE BDD:", err);
-        process.exit(1);
+        console.error("ERREUR lors de la configuration de la base de données:", err);
     } finally {
         if (client) client.release();
+        console.log('Configuration de la base de données terminée.');
     }
-}
+};
 
-
+// --- Création du routeur principal pour l'API ---
 const apiRouter = express.Router();
 
 // --- Authentification ---
@@ -97,24 +95,17 @@ apiRouter.post('/auth/login', async (req, res) => {
         const { username, password } = req.body;
         const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
         if (result.rows.length === 0) return res.status(401).json({ message: "Identifiants incorrects." });
-        
         const user = result.rows[0];
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) return res.status(401).json({ message: "Identifiants incorrects." });
-        
         res.json({ id: user.id, username: user.username });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Erreur serveur." });
-    }
+    } catch (err) { res.status(500).json({ message: "Erreur serveur." }); }
 });
 
 apiRouter.post('/auth/reset-password', async (req, res) => {
     try {
         const { username, newPassword } = req.body;
-        if (!username || !newPassword || newPassword.length < 6) {
-            return res.status(400).json({ message: "Données invalides." });
-        }
+        if (!username || !newPassword || newPassword.length < 6) { return res.status(400).json({ message: "Données invalides." }); }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
         const result = await pool.query("UPDATE users SET password = $1 WHERE username = $2", [hashedPassword, username]);
@@ -134,9 +125,7 @@ apiRouter.get('/users', async (req, res) => {
 apiRouter.post('/users', async (req, res) => {
     try {
         const { username, password } = req.body;
-        if (!username || !password || password.length < 6) {
-            return res.status(400).json({ message: "Nom d'utilisateur et mot de passe (6 caractères min) requis." });
-        }
+        if (!username || !password || password.length < 6) { return res.status(400).json({ message: "Nom d'utilisateur et mot de passe (6 caractères min) requis." }); }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const sql = `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username, created_at`;
@@ -188,19 +177,16 @@ apiRouter.post('/sorties', async (req, res) => { const { code, date_sortie, type
 apiRouter.put('/sorties/:id', async (req, res) => { const { id } = req.params; const { date_sortie, type_transaction, montant, devise, temoin, commentaires } = req.body; try { const sql = `UPDATE sorties SET date_sortie = $1, type_transaction = $2, montant = $3, devise = $4, temoin = $5, commentaires = $6 WHERE id = $7 RETURNING *`; const result = await pool.query(sql, [date_sortie, type_transaction, montant, devise, temoin, commentaires, id]); if (result.rowCount === 0) return res.status(404).json({ message: "Sortie non trouvée." }); res.json(result.rows[0]); } catch (err) { res.status(500).json({ error: err.message }); } });
 apiRouter.delete('/sorties/:id', async (req, res) => { try { const result = await pool.query('DELETE FROM sorties WHERE id = $1', [req.params.id]); if (result.rowCount === 0) return res.status(404).json({ message: "Sortie non trouvée." }); res.status(204).send(); } catch (err) { res.status(500).json({ error: err.message }); } });
 
-// On dit à Express d'utiliser ce routeur pour toutes les requêtes commençant par /api
+// On dit à Express d'utiliser le routeur pour les URLs commençant par /api
 app.use('/api', apiRouter);
 
-// Gestion des routes non trouvées (doit être à la fin)
+// Gestion des routes non trouvées
 app.use((req, res) => {
     res.status(404).json({ message: "Route non trouvée." });
 });
 
-async function startServer() {
-    await initializeDatabase();
-    app.listen(PORT, () => {
-        console.log(`✅ Serveur backend démarré sur le port ${PORT}`);
-    });
-}
-
-startServer();
+// Démarrage du serveur
+app.listen(PORT, () => {
+  setupDatabase(); // On lance la configuration de la BDD après le démarrage du serveur
+  console.log(`✅ Serveur backend démarré sur le port ${PORT}`);
+});
